@@ -3,7 +3,7 @@ import { Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
 
-import { TrainingSession } from './train.js';
+import TrainingSession from './train.js';
 import Settings from './settings.js';
 
 function App() {
