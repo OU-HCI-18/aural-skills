@@ -1,0 +1,56 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-button {
+  height: 10vmin;
+  width: 15vw;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  border: black;
+}
+
+.Results-table {
+  padding: 20px;
+}
+
+.Note-header {
+  padding: 20px;
+}
+
+.Note-button {
+  height: 5vmin;
+  width: 5vw;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  border: black;
+  background-color: darkorchid;
+  
+}
+
+.colorGreen {
+  background-color: lightgreen;
+}
+
+.colorCoral {
+  background-color: lightcoral;
+}
+
+.colorYellow {
+  background-color: lemonchiffon;
+}
