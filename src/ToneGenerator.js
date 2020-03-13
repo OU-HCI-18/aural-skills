@@ -2,23 +2,50 @@ import React from 'react';
 import { Synth } from 'tone';
 
 var synth = new Synth().toMaster();
-var note_arr = ['A','B','C','D','E','F','G'];
+var note_arr = ['C', 'C#','D', 'Eb','E','F', 'F#','G', 'Ab', 'A', 'Bb', 'B', ];
 
 function NoteButton(props) {
-  return (
-    <button className="Note-button" onClick={(e) => props.handleClick(props.name)}>{props.name}</button>
-  );
+  if (props.color === 'white') {
+    return (
+      <button className="Note-button Note-white" onClick={(e) => props.handleClick(props.name)}>{props.name}</button>
+    );
+  }
+  else if (props.color=== 'black') {
+    return (
+      <button className="Note-button Note-black" onClick={(e) => props.handleClick(props.name)}>{props.name}</button>
+    );    
+  }
+  else {
+    return (
+      <button className="Note-button Blank-note" ></button>
+    ); 
+  }
 }
 function NoteButtons(props) {
   return(
   <div className="Note-header">
-    <NoteButton name={'C'} handleClick={props.handleClick} />
-    <NoteButton name={'D'} handleClick={props.handleClick} />
-    <NoteButton name={'E'} handleClick={props.handleClick} />
-    <NoteButton name={'F'} handleClick={props.handleClick} />
-    <NoteButton name={'G'} handleClick={props.handleClick} />
-    <NoteButton name={'A'} handleClick={props.handleClick} />
-    <NoteButton name={'B'} handleClick={props.handleClick} />
+    <div>
+      <NoteButton color='black' name={'C#'} handleClick={props.handleClick} />
+      <NoteButton color='black' name={'Eb'} handleClick={props.handleClick} />
+      <NoteButton color='blank' />  
+      <NoteButton color='black' name={'F#'} handleClick={props.handleClick} />
+      <NoteButton color='black' name={'Ab'} handleClick={props.handleClick} />
+      <NoteButton color='black' name={'Bb'} handleClick={props.handleClick} />
+    </div>
+    <div>
+      <NoteButton color='white' name={'C'} handleClick={props.handleClick} />
+      
+      <NoteButton color='white' name={'D'} handleClick={props.handleClick} />
+      
+      <NoteButton color='white' name={'E'} handleClick={props.handleClick} />
+      <NoteButton color='white' name={'F'} handleClick={props.handleClick} />
+      
+      <NoteButton color='white' name={'G'} handleClick={props.handleClick} />
+      
+      <NoteButton color='white' name={'A'} handleClick={props.handleClick} />
+      
+      <NoteButton color='white' name={'B'} handleClick={props.handleClick} />
+   </div>
   </div>
   );
 }
