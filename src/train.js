@@ -1,28 +1,24 @@
 import React from 'react';
 import './App.css';
+import { Link, Switch, Route } from 'react-router-dom';
 
-import Piano from './piano.js'
-import Results from './results.js'
-import ToneGen from './ToneGenerator.js';
+import Results from './results.js';
 
-class TrainingSession extends React.Component {
+class TrainingSession extends React.Component{
   note_stack = [];
   guess_stack = [];
   result_stack = [];
 
   guessed = false;
   start = false;
+  
   constructor(props) {
     super(props);
-    // make sure mode gets set correctly
-    var mode = (props.mode) ? props.mode : 'guess';
-
     this.state = {
-      note: '', 
-      guess: '', 
-      result: '',
-      mode: mode
-    };
+      note: '',
+      guess: '',
+      result: ''
+    }
 
     this.onNoteChange = this.onNoteChange.bind(this);
     this.onGuessChange = this.onGuessChange.bind(this);
@@ -30,6 +26,8 @@ class TrainingSession extends React.Component {
     this.onContinue = this.onContinue.bind(this);
     this.onResults = this.onResults.bind(this);
     this.calcScore = this.calcScore.bind(this);
+    this.onStart = this.onStart.bind(this);
+    this.onPlay = this.onPlay.bind(this);
   }
   onNoteChange(value) {
     if (!this.guessed && this.start) {
@@ -47,7 +45,7 @@ class TrainingSession extends React.Component {
     else
       this.guess_stack[0] = value;
     this.setState({guess: value});
-    if (this.state.mode === 'guess') {
+    if (this.props.mode === 'guess') {
       var res = this.isCorrect() ? ' : Correct' : ' : Incorrect';
       this.setState({result: res});
     }
@@ -65,11 +63,37 @@ class TrainingSession extends React.Component {
       return false;
     }
   }
+  onPlay() {
+    this.note_stack = [];
+    this.guess_stack = [];
+    this.result_stack = [];
+    this.guessed = false;
+    this.start = false;
+    this.setState({
+      note: '',
+      guess: '',
+      result: ''
+    })
+    this.props.setMode('play')
+  }
+  onStart() {
+    this.note_stack = [];
+    this.guess_stack = [];
+    this.result_stack = [];
+    this.guessed = false;
+    this.start = false;
+    this.setState({
+      note: '',
+      guess: '',
+      result: ''
+    })
+    this.props.setMode('guess')
+  }
   onContinue() {
-    this.setState({mode:'guess'})
+    this.props.setMode('guess')
   }
   onResults() {
-    this.setState({mode:'show'})
+    this.props.setMode('results')
   }
   calcScore() {
     var score = 0;
@@ -84,42 +108,93 @@ class TrainingSession extends React.Component {
   }
 
   render() {
-    if (this.state.mode==='play') {
-      return (
-        <div>
-        <ToneGen 
-            onNoteChange={this.onNoteChange} 
-            onGuessChange={this.onGuessChange} 
-            isCorrect={this.isCorrect}
-            mode={this.props.mode}
-            b_name={this.props.b_name}
-        />
-        <p>{this.state.guess}{this.state.result}</p>
-        </div>
-      )
+    if (this.props.ui == null) {
+      return (<p>Error displaying user interface!</p>);
     }
-    else if (this.state.mode==='show') {
-      return (
-        <Results 
-          onContinue={this.onContinue}
-          guesses={this.guess_stack}
-          notes={this.note_stack}
-          results={this.result_stack}
-          score={this.calcScore()}
-        />
-      );
-    }
-    else {
-      return (
-        <Piano 
+    if (this.props.mode === 'play') {
+      return(
+      <header className="App-header">
+        <h1>Aural Training</h1> 
+        <p>
+          <Link to='/train'>
+            <button className="App-button colorGreen" onClick={this.onStart}>
+            Start
+            </button>
+          </Link>
+          <Link to='/settings'>
+            <button className="App-button colorCoral">Settings</button>
+          </Link>
+        </p>
+        <p>Play a note!</p>
+        <this.props.ui 
           onResults={this.onResults}
-          onNoteChange={this.onNoteChange} 
-          onGuessChange={this.onGuessChange} 
+          onNoteChange={this.onNoteChange}
+          onGuessChange={this.onGuessChange}
           isCorrect={this.isCorrect}
+          note={this.state.note}
           guess={this.state.guess}
           result={this.state.result}
+          mode={this.props.mode}
         />
+      </header>
       );
+    }
+    else if (this.props.mode === 'guess') {
+      return(
+      <header className="App-header">
+        <h1>Aural Training</h1> 
+        <p>
+          <Link to='/'>
+            <button className="App-button colorGreen" onClick={this.onPlay}>Stop</button>
+          </Link>
+          <Link to='/settings'>
+            <button className="App-button colorCoral">Settings</button>
+          </Link>
+          <Link to='/results'>
+            <button className="App-button colorYellow" onClick={this.onResults}>
+              Results
+            </button>
+          </Link>
+        </p>
+        <p>What Note Just Played?</p>
+        <this.props.ui 
+          onResults={this.onResults}
+          onNoteChange={this.onNoteChange}
+          onGuessChange={this.onGuessChange}
+          isCorrect={this.isCorrect}
+          note={this.state.note}
+          guess={this.state.guess}
+          result={this.state.result}
+          mode={this.props.mode}
+        />
+      </header>
+      );
+    }
+    else if (this.props.mode === 'results') {
+      return(
+        <header className="App-header">
+          <h1>Results</h1> 
+          <p>
+            <Link to='/'>
+              <button className="App-button colorGreen" onClick={this.onPlay}>Start Over</button>
+            </Link>
+            <Link to='/settings'> 
+              <button className="App-button colorCoral">Settings</button>
+            </Link>
+            <Link to='/train'>
+              <button className="App-button colorYellow" onClick={this.onContinue}>
+                Continue
+              </button>
+            </Link>
+          </p>
+          <Results
+            guesses ={this.guess_stack}
+            notes   ={this.note_stack}
+            results ={this.result_stack}
+            score   ={this.calcScore()}
+          />
+        </header>
+        );
     }
   }
 }

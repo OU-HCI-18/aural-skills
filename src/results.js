@@ -24,21 +24,6 @@ class Results extends React.Component {
   render() {
     return (
       <div className="App">
-      <header className="App-header">
-        <h1>Results</h1>
-        <p>
-          <Link to='/'>
-            <button className="App-button colorGreen">Start Over</button>
-          </Link>
-          <Link to='/settings'>
-            <button className="App-button colorCoral">Settings</button>
-          </Link>
-          <Link to='/train'>
-            <button className="App-button colorYellow" onClick={this.props.onContinue}>
-              Continue
-            </button>
-          </Link>
-        </p>
         <h2>Score: {this.props.score[1]}% ({this.props.score[0]} / {this.props.notes.length})</h2>
         <table className='Results-table'>
           <thead>
@@ -62,8 +47,7 @@ class Results extends React.Component {
             />
           ))}
         </tbody>
-        </table>  
-        </header>
+        </table>
       </div>
     );
   }
