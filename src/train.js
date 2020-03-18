@@ -75,7 +75,8 @@ class TrainingSession extends React.Component{
       result: ''
     }
     this.train_data = new TrainingData();
-
+    if (props.train_data != null) 
+      this.train_data = props.train_data;
     this.onNoteChange = this.onNoteChange.bind(this);
     this.onGuessChange = this.onGuessChange.bind(this);
     this.onPlay = this.onPlay.bind(this);
@@ -122,24 +123,21 @@ class TrainingSession extends React.Component{
     this.props.setMode('results');
   }
   render() {
-    if (this.props.ui == null) {
-      return (<p>Error displaying user interface!</p>);
-    }
     if (this.props.mode === 'play') {
       return(
-      <header className="App-header">
-        <h1>Aural Training</h1> 
-        <p>
-          <Link to='/train'>
-            <button className="App-button colorGreen" onClick={this.onStart}>
-            Start
-            </button>
-          </Link>
-          <Link to='/settings'>
-            <button className="App-button colorCoral">Settings</button>
-          </Link>
-        </p>
-        <p>Play a note!</p>
+      // <header className="App-header">
+      //   <h1>Aural Training</h1> 
+      //   <p>
+      //     <Link to='/train'>
+      //       <button className="App-button colorGreen" onClick={this.onStart}>
+      //       Start
+      //       </button>
+      //     </Link>
+      //     <Link to='/settings'>
+      //       <button className="App-button colorCoral">Settings</button>
+      //     </Link>
+      //   </p>
+      //   <p>Play a note!</p>
         <this.props.ui 
           onResults={this.onResults}
           onNoteChange={this.onNoteChange}
@@ -149,27 +147,27 @@ class TrainingSession extends React.Component{
           result={this.state.result}
           mode={this.props.mode}
         />
-      </header>
+      // </header>
       );
     }
     else if (this.props.mode === 'guess') {
       return(
-      <header className="App-header">
-        <h1>Aural Training</h1> 
-        <p>
-          <Link to='/'>
-            <button className="App-button colorGreen" onClick={this.onPlay}>Stop</button>
-          </Link>
-          <Link to='/settings'>
-            <button className="App-button colorCoral">Settings</button>
-          </Link>
-          <Link to='/results'>
-            <button className="App-button colorYellow" onClick={this.onResults}>
-              Results
-            </button>
-          </Link>
-        </p>
-        <p>What Note Just Played?</p>
+      // <header className="App-header">
+      //   <h1>Aural Training</h1> 
+      //   <p>
+      //     <Link to='/'>
+      //       <button className="App-button colorGreen" onClick={this.onPlay}>Stop</button>
+      //     </Link>
+      //     <Link to='/settings'>
+      //       <button className="App-button colorCoral">Settings</button>
+      //     </Link>
+      //     <Link to='/results'>
+      //       <button className="App-button colorYellow" onClick={this.onResults}>
+      //         Results
+      //       </button>
+      //     </Link>
+      //   </p>
+      //   <p>What Note Just Played?</p>
         <this.props.ui 
           onResults={this.onResults}
           onNoteChange={this.onNoteChange}
@@ -179,36 +177,38 @@ class TrainingSession extends React.Component{
           result={this.state.result}
           mode={this.props.mode}
         />
-      </header>
+      // </header>
       );
     }
-    else if (this.props.mode === 'results') {
-      return(
-        <header className="App-header">
-          <h1>Results</h1> 
-          <p>
-            <Link to='/'>
-              <button className="App-button colorGreen" onClick={this.onPlay}>Start Over</button>
-            </Link>
-            <Link to='/settings'> 
-              <button className="App-button colorCoral">Settings</button>
-            </Link>
-            <Link to='/train'>
-              <button className="App-button colorYellow" onClick={this.onContinue}>
-                Continue
-              </button>
-            </Link>
-          </p>
-          <Results
-            guesses ={this.train_data.guess_stack}
-            notes   ={this.train_data.note_stack}
-            results ={this.train_data.result_stack}
-            score   ={this.train_data.calcScore()}
-          />
-        </header>
-        );
-    }
+    // else if (this.props.mode === 'results') {
+    //   return(
+    //     <header className="App-header">
+    //       <h1>Results</h1> 
+    //       <p>
+    //         <Link to='/'>
+    //           <button className="App-button colorGreen" onClick={this.onPlay}>Start Over</button>
+    //         </Link>
+    //         <Link to='/settings'> 
+    //           <button className="App-button colorCoral">Settings</button>
+    //         </Link>
+    //         <Link to='/train'>
+    //           <button className="App-button colorYellow" onClick={this.onContinue}>
+    //             Continue
+    //           </button>
+    //         </Link>
+    //       </p>
+    //       <Results
+    //         guesses ={this.train_data.guess_stack}
+    //         notes   ={this.train_data.note_stack}
+    //         results ={this.train_data.result_stack}
+    //         score   ={this.train_data.calcScore()}
+    //       />
+    //     </header>
+    //     );
+    // }
+    return (<p>Error displaying user interface!</p>);
   }
 }
 
 export default TrainingSession;
+export {TrainingData, TrainingSession};
