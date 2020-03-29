@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/static/css/main.4be30860.chunk.css",
-    "main.js": "/static/js/main.cc9d88a1.chunk.js",
-    "main.js.map": "/static/js/main.cc9d88a1.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.00394b08.js",
-    "runtime-main.js.map": "/static/js/runtime-main.00394b08.js.map",
-    "static/js/2.8a89f0e5.chunk.js": "/static/js/2.8a89f0e5.chunk.js",
-    "static/js/2.8a89f0e5.chunk.js.map": "/static/js/2.8a89f0e5.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.09534c3072e64193f3398e328269c686.js": "/precache-manifest.09534c3072e64193f3398e328269c686.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.4be30860.chunk.css.map": "/static/css/main.4be30860.chunk.css.map",
-    "static/js/2.8a89f0e5.chunk.js.LICENSE.txt": "/static/js/2.8a89f0e5.chunk.js.LICENSE.txt"
+    "main.css": "/website/static/css/main.4be30860.chunk.css",
+    "main.js": "/website/static/js/main.bed57370.chunk.js",
+    "main.js.map": "/website/static/js/main.bed57370.chunk.js.map",
+    "runtime-main.js": "/website/static/js/runtime-main.448dd9eb.js",
+    "runtime-main.js.map": "/website/static/js/runtime-main.448dd9eb.js.map",
+    "static/js/2.8a89f0e5.chunk.js": "/website/static/js/2.8a89f0e5.chunk.js",
+    "static/js/2.8a89f0e5.chunk.js.map": "/website/static/js/2.8a89f0e5.chunk.js.map",
+    "index.html": "/website/index.html",
+    "precache-manifest.982a0fd558e39934f83d41eb662b1486.js": "/website/precache-manifest.982a0fd558e39934f83d41eb662b1486.js",
+    "service-worker.js": "/website/service-worker.js",
+    "static/css/main.4be30860.chunk.css.map": "/website/static/css/main.4be30860.chunk.css.map",
+    "static/js/2.8a89f0e5.chunk.js.LICENSE.txt": "/website/static/js/2.8a89f0e5.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.00394b08.js",
+    "static/js/runtime-main.448dd9eb.js",
     "static/js/2.8a89f0e5.chunk.js",
     "static/css/main.4be30860.chunk.css",
-    "static/js/main.cc9d88a1.chunk.js"
+    "static/js/main.bed57370.chunk.js"
   ]
 }
