@@ -1,8 +1,5 @@
 import React from 'react';
 import './App.css';
-import { Link, Switch, Route } from 'react-router-dom';
-
-import Results from './results.js';
 
 class TrainingData {
   note_stack = [];
@@ -15,8 +12,8 @@ class TrainingData {
   constructor() {
     this.isCorrect = this.isCorrect.bind(this);
     this.addResult = this.addResult.bind(this);
-    this.addGuess = this.addGuess.bind(this);
-    this.addNote = this.addNote.bind(this);
+    this.addGuess  = this.addGuess.bind(this);
+    this.addNote   = this.addNote.bind(this);
     this.calcScore = this.calcScore.bind(this);
   }
 
@@ -33,8 +30,8 @@ class TrainingData {
   addGuess(note) {
     if (!this.guessed)
       this.guess_stack.unshift(note);
-    else
-      this.guess_stack[0] = note;
+    // else
+    //   this.guess_stack[0] = note;
     this.addResult();
   }
   addNote(note) {
@@ -75,14 +72,16 @@ class TrainingSession extends React.Component{
       result: ''
     }
     this.train_data = new TrainingData();
+
     if (props.train_data != null) 
       this.train_data = props.train_data;
-    this.onNoteChange = this.onNoteChange.bind(this);
-    this.onGuessChange = this.onGuessChange.bind(this);
-    this.onPlay = this.onPlay.bind(this);
-    this.onStart = this.onStart.bind(this);
-    this.onContinue = this.onContinue.bind(this);
-    this.onResults = this.onResults.bind(this);
+    
+    this.onNoteChange   = this.onNoteChange.bind(this);
+    this.onGuessChange  = this.onGuessChange.bind(this);
+    this.onPlay         = this.onPlay.bind(this);
+    this.onStart        = this.onStart.bind(this);
+    this.onContinue     = this.onContinue.bind(this);
+    this.onResults      = this.onResults.bind(this);
   }
   onNoteChange(value) {
     this.train_data.addNote(value);
@@ -139,13 +138,13 @@ class TrainingSession extends React.Component{
       //   </p>
       //   <p>Play a note!</p>
         <this.props.ui 
-          onResults={this.onResults}
-          onNoteChange={this.onNoteChange}
-          onGuessChange={this.onGuessChange}
-          note={this.state.note}
-          guess={this.state.guess}
-          result={this.state.result}
-          mode={this.props.mode}
+          onResults = {this.onResults}
+          onNoteChange = {this.onNoteChange}
+          onGuessChange = {this.onGuessChange}
+          note = {this.state.note}
+          guess = {this.state.guess}
+          result = {this.state.result}
+          mode = {this.props.mode}
         />
       // </header>
       );
@@ -169,43 +168,17 @@ class TrainingSession extends React.Component{
       //   </p>
       //   <p>What Note Just Played?</p>
         <this.props.ui 
-          onResults={this.onResults}
-          onNoteChange={this.onNoteChange}
-          onGuessChange={this.onGuessChange}
-          note={this.state.note}
-          guess={this.state.guess}
-          result={this.state.result}
-          mode={this.props.mode}
+          onResults = {this.onResults}
+          onNoteChange = {this.onNoteChange}
+          onGuessChange = {this.onGuessChange}
+          note = {this.state.note}
+          guess = {this.state.guess}
+          result = {this.state.result}
+          mode = {this.props.mode}
         />
       // </header>
       );
     }
-    // else if (this.props.mode === 'results') {
-    //   return(
-    //     <header className="App-header">
-    //       <h1>Results</h1> 
-    //       <p>
-    //         <Link to='/'>
-    //           <button className="App-button colorGreen" onClick={this.onPlay}>Start Over</button>
-    //         </Link>
-    //         <Link to='/settings'> 
-    //           <button className="App-button colorCoral">Settings</button>
-    //         </Link>
-    //         <Link to='/train'>
-    //           <button className="App-button colorYellow" onClick={this.onContinue}>
-    //             Continue
-    //           </button>
-    //         </Link>
-    //       </p>
-    //       <Results
-    //         guesses ={this.train_data.guess_stack}
-    //         notes   ={this.train_data.note_stack}
-    //         results ={this.train_data.result_stack}
-    //         score   ={this.train_data.calcScore()}
-    //       />
-    //     </header>
-    //     );
-    // }
     return (<p>Error displaying user interface!</p>);
   }
 }

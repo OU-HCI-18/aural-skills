@@ -25,6 +25,10 @@
   border: black;
 }
 
+.Results-table {
+  text-align: center;
+}
+
 .Results-table-cell {
   padding: 10px;
 }

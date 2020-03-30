@@ -23,7 +23,7 @@ function ResultItem(props) {
 class Results extends React.Component {
   render() {
     return (
-      <div className="App">
+      <div className="App App-header">
         <h2>Score: {this.props.score[1]}% ({this.props.score[0]} / {this.props.notes.length})</h2>
         <table className='Results-table'>
           <thead>
@@ -34,19 +34,19 @@ class Results extends React.Component {
               <th className='Results-table-cell'>Result</th>
             </tr>
           </thead>
-        <tbody>
-          {this.props.guesses.map((guess, index) => (
-            [guess, this.props.notes[index], this.props.results[index]]
-            )).map((guess_note, index) => ( 
-            <ResultItem 
-                key={index} 
-                index={this.props.guesses.length - index}
-                guess={guess_note[0]} 
-                note={guess_note[1]} 
-                result={guess_note[2]}
-            />
-          ))}
-        </tbody>
+          <tbody>
+            {this.props.guesses.map((guess, index) => (
+              [guess, this.props.notes[index], this.props.results[index]]
+              )).map((guess_note, index) => ( 
+              <ResultItem 
+                  key={index} 
+                  index={this.props.guesses.length - index}
+                  guess={guess_note[0]} 
+                  note={guess_note[1]} 
+                  result={guess_note[2]}
+              />
+              ))}
+          </tbody>
         </table>
       </div>
     );

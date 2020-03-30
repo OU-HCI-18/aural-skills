@@ -1,142 +1,127 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import './App.css';
 
-import ToneGen from './ToneGenerator.js';
-// import TrainingSession from './train.js';
-
-function NoteButton(props) {
-  if (props.color === 'white') {
-    return (
-      <button className="Note-button Note-white" onClick={(e) => props.handleClick(props.name)}>{props.name}</button>
-    );
-  }
-  else if (props.color=== 'black') {
-    return (
-      <button className="Note-button Note-black" onClick={(e) => props.handleClick(props.name)}>{props.name}</button>
-    );    
-  }
-  else {
-    return (
-      <button className="Note-button Blank-note" ></button>
-    ); 
-  }
+function WhiteNote(props) {
+  return (
+    <button 
+        className="Note-button Note-white" 
+        onClick={(e) => props.onNoteClick(props.name)}>
+      {props.name}
+    </button>
+  );
+}
+function BlackNote(props) {
+  return (
+    <button 
+        className="Note-button Note-black" 
+        onClick={(e) => props.onNoteClick(props.name)}>
+      {props.name}
+    </button>
+  );
+}
+function SpacerNote() {
+  return (
+    <button className="Note-button Blank-note" ></button>
+  );
 }
 
-function NoteButtons(props) {
+function Piano(props) {
   return(
   <div className="Note-header">
+    {/* black notes */}
     <div>
-      <NoteButton color='black' name={'C#'} handleClick={props.handleClick} />
-      <NoteButton color='black' name={'Eb'} handleClick={props.handleClick} />
-      <NoteButton color='blank' />  
-      <NoteButton color='black' name={'F#'} handleClick={props.handleClick} />
-      <NoteButton color='black' name={'Ab'} handleClick={props.handleClick} />
-      <NoteButton color='black' name={'Bb'} handleClick={props.handleClick} />
+      <BlackNote name={'C#'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Eb'} onNoteClick={props.onNoteClick} />
+      <SpacerNote />  
+      <BlackNote name={'F#'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Ab'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Bb'} onNoteClick={props.onNoteClick} />
     </div>
+    {/* white notes */}
     <div>
-      <NoteButton color='white' name={'C'} handleClick={props.handleClick} />
+      <WhiteNote name={'C'} onNoteClick={props.onNoteClick} />
       
-      <NoteButton color='white' name={'D'} handleClick={props.handleClick} />
+      <WhiteNote name={'D'} onNoteClick={props.onNoteClick} />
       
-      <NoteButton color='white' name={'E'} handleClick={props.handleClick} />
-      <NoteButton color='white' name={'F'} handleClick={props.handleClick} />
+      <WhiteNote name={'E'} onNoteClick={props.onNoteClick} />
+      <WhiteNote name={'F'} onNoteClick={props.onNoteClick} />
       
-      <NoteButton color='white' name={'G'} handleClick={props.handleClick} />
+      <WhiteNote name={'G'} onNoteClick={props.onNoteClick} />
       
-      <NoteButton color='white' name={'A'} handleClick={props.handleClick} />
+      <WhiteNote name={'A'} onNoteClick={props.onNoteClick} />
       
-      <NoteButton color='white' name={'B'} handleClick={props.handleClick} />
+      <WhiteNote name={'B'} onNoteClick={props.onNoteClick} />
    </div>
   </div>
   );
 }
 
 
-class Piano extends React.Component {
+// class Piano extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      mode: props.mode,
-      note: '',
-      guess: ''
-    };
-    this.handleGuess = this.handleGuess.bind(this);
-    this.handlePlay = this.handlePlay.bind(this);
-    this.handleNext = this.handleNext.bind(this);
-    this.handleRnd = this.handleRnd.bind(this);
+//   constructor(props) {
+//     super(props);
+//     this.state = {
+//       mode: props.mode,
+//       note: '',
+//       guess: ''
+//     };
+//     this.handleGuess = this.handleGuess.bind(this);
+//     this.handlePlay = this.handlePlay.bind(this);
+//     this.handleNext = this.handleNext.bind(this);
+//     this.handleRnd = this.handleRnd.bind(this);
 
-    this.toneGen = new ToneGen();
-  }
+//     this.toneGen = new ToneGen();
+//   }
 
-  handleGuess(note) {
-    this.props.onGuessChange(note+'4');
-  }
+//   handleGuess(note) {
+//     this.props.onGuessChange(note+'4');
+//   }
 
-  handlePlay(note) {
-    this.toneGen.play_note_button(note);
-    this.props.onNoteChange(note+'4');
-  }
+//   handlePlay(note) {
+//     this.toneGen.play_note_button(note);
+//     this.props.onNoteChange(note+'4');
+//   }
 
-  handleNext() {
-    this.props.onNoteChange(this.toneGen.play_rand_note());
-  }
+//   handleNext() {
+//     this.props.onNoteChange(this.toneGen.play_rand_note());
+//   }
 
-  handleRnd() {
-    this.props.onNoteChange(this.toneGen.play_rand_note());
-  }
+//   handleRnd() {
+//     this.props.onNoteChange(this.toneGen.play_rand_note());
+//   }
 
-  render() {
-    var button_click;
-    var message;
-    var next;
-    var next_message;
-    var note;
-    if (this.props.mode === 'guess') {
-      button_click = this.handleGuess;
-      message = "You Guessed: ";
-      next = this.handleNext;
-      next_message = "Play Next";
-      note = this.props.guess;
-    }
-    else {
-      button_click = this.handlePlay;
-      message = "Note Played:";
-      next = this.handleRnd;
-      next_message = "Random Note";
-      note = this.props.note;
-    }
-    return (
-    // <div className="App">
-    //   <header className="App-header">
-    //     <h1>Training</h1>
-        // <p>
-        //   <Link to='/'>
-        //     <button className="App-button colorGreen">Stop</button>
-        //   </Link>
-        //   <Link to='/settings'>
-        //     <button className="App-button colorCoral">Settings</button>
-        //   </Link>
-        //   <Link to='/results'>
-        //     <button className="App-button colorYellow" onClick={this.props.onResults}>
-        //       Results
-        //     </button>
-        //   </Link>
-        // </p>
-    //     <p>What Note Just Played?</p>
-        <div>
-          <NoteButtons handleClick={button_click} />
-          <button className='App-button colorYellow' onClick={next}>
-            {next_message}
-          </button>
-          <p>{message}</p>
-          <p>{note}{this.props.result}</p>
-        </div>
-  //     </header>
-  //   </div>
-  );  
-  }
-}
+//   render() {
+//     var button_click;
+//     var message;
+//     var next;
+//     var next_message;
+//     var note;
+//     if (this.props.mode === 'guess') {
+//       button_click = this.handleGuess;
+//       message = "You Guessed: ";
+//       next = this.handleNext;
+//       next_message = "Play Next";
+//       note = this.props.guess;
+//     }
+//     else {
+//       button_click = this.handlePlay;
+//       message = "Note Played:";
+//       next = this.handleRnd;
+//       next_message = "Random Note";
+//       note = this.props.note;
+//     }
+//     return (
+//       <div>
+//         <NoteButtons handleClick={button_click} />
+//         <button className='App-button colorYellow' onClick={next}>
+//           {next_message}
+//         </button>
+//         <p>{message}</p>
+//         <p>{note}{this.props.result}</p>
+//       </div>
+//     );  
+//   }
+// }
 
 export default Piano;

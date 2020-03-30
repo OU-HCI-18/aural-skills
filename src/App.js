@@ -1,133 +1,178 @@
-import React from 'react';
-import { Link, Switch, Route } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
-
-import {TrainingData, TrainingSession} from './train.js';
+// import {TrainingData, TrainingSession} from './train.js';
 import Piano from './piano.js';
 import Results from './results.js';
 import Settings from './settings.js';
+import ToneGen from './ToneGenerator';
 
-var train_data = new TrainingData();
+var toneGen = new ToneGen();
+
+class TrainData {
+
+  note_stack = [];
+  guess_stack = [];
+  result_stack = [];
+  start = false;
+  guessed = true;
+
+  constructor() {
+    this.addGuess  = this.addGuess.bind(this);
+    this.addNote   = this.addNote.bind(this);
+    this.calcScore = this.calcScore.bind(this);
+  }
+
+  addNote(note) {
+    if (!this.guessed) {
+      this.guess_stack.unshift('-');
+    }
+    this.note_stack.unshift(note);
+    this.guessed = false;
+  }
+
+  addGuess(note) {
+    // FIXME
+    note = note + '4'
+    if (!this.guessed) {
+      this.guessed = true;
+      this.guess_stack.unshift(note)
+      this.result_stack.unshift(note === this.note_stack[0]);
+    }
+    return (this.result_stack[0]);
+  }
+  
+  calcScore() {
+    var score = 0;
+    for (let i = 0; i < this.note_stack.length; ++i) {
+      if (i < this.guess_stack.length)
+        if (this.note_stack[i] === this.guess_stack[i])
+          ++score;
+    }
+    if (score === 0)
+      return [0,0];
+    return [score, Math.round(100 * (score / this.note_stack.length))];
+  }
+}
+
+var trainData = new TrainData();
 
 class App extends React.Component {
   
   constructor(props) {
     super(props);
-    this.state = {
-      mode: 'play'
-    };
-    train_data = new TrainingData();
-    this.setMode=this.setMode.bind(this);
-  }
-  setMode(mode) {
-    this.setState({mode: mode});
-  }
-  onPlay() {
-    train_data = new TrainingData();
-    this.setMode('play');
+    // this.trainData = new TrainingData();
+    this.onStart = this.onStart.bind(this);
   }
   onStart() {
-    train_data = new TrainingData();
-    this.setMode('guess');
+    console.log("resetting train data");
+    trainData = new TrainData();
   }
-  onContinue() {
-    this.setMode('guess');
-  }
-  onResults() {
-    this.setMode('results');
-  }
+
   render() {
-    if (this.state.mode === 'play') {
-      return(
-        <PlayView 
-          onStart={this.onStart}
-          setMode={this.setMode}
-        />
-      );
-    }
-    else if (this.state.mode === 'guess') {
-      return(
-        <TrainView 
-          onPlay={this.onPlay}
-          onResults={this.onResults}
-          setMode={this.setMode}
-          train_data={this.UNSAFE_componentWillMount.train_data}
-        />
-      );
-    }
-    else if (this.state.mode === 'results') {
-      return(
-        <ResultsView
-          train_data={train_data}
-        />
-      )
-    }
-  }
+    return(
+    <header className="App App-header">
+      <h1>Aural Training</h1> 
+      <BrowserRouter>
+        <Switch>
+          <Route path='/settings'>
+            <Settings />
+          </Route>
+          <Route path='/results'>
+            <ResultsView trainData={trainData}/>
+          </Route>
+          <Route path='/train'> 
+            <TrainView trainData={trainData} ui={Piano}/> 
+          </Route>
+          <Route path='/'> 
+            <PlayView onStart={this.onStart} ui={Piano}/> 
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </header>
+  );}
 }
 
 function PlayView (props) {
-  return(
-  <header className="App App-header">
-    <h1>Aural Training</h1> 
+  // react hooks!
+  const [note, setNote] = useState('');
+
+  useEffect(() => {
+    console.log(note);
+    toneGen.play_note_button(note); 
+  });
+  
+  return (
+  <div>
     <p>
       <Link to='/train'>
-        <button className="App-button colorGreen">
-        Start
-        </button>
+        <button className="App-button colorGreen" onClick={props.onStart}>Start</button>
       </Link>
       <Link to='/settings'>
         <button className="App-button colorCoral">Settings</button>
       </Link>
+      <Link to='/results'>
+        <button className="App-button colorYellow">Results</button>
+      </Link>
     </p>
-    <p>Play a note!</p>
-    <TrainingSession 
-      mode='play'
-      ui={Piano}
-      setMode={props.setMode}
-    />
-  </header>
-  )
+    <div>
+      <p>Play a note!</p>
+      <props.ui 
+        onNoteClick = {(note) => setNote(note)}
+      />
+      <p>Note Played:</p>
+      <p>{note}</p>
+    </div>
+  </div>
+  );
 }
 
 function TrainView (props) {
+  const [guess, setGuess] = useState('');
+  const [result, setResult] = useState(null);
+
   return (
-  <header className="App App-header">
-  <h1>Aural Training</h1> 
-  <p>
-    <Link to='/'>
-      <button className="App-button colorGreen">Stop</button>
-    </Link>
-    <Link to='/settings'>
-      <button className="App-button colorCoral">Settings</button>
-    </Link>
-    <Link to='/results'>
-      <button className="App-button colorYellow">
-        Results
-      </button>
-    </Link>
-  </p>
-  <p>What Note Just Played?</p>
-  <TrainingSession 
-      mode='guess'
-      ui={Piano}
-      setMode={props.setMode}
-      train_data={train_data}
-    />
-  </header>
+    <div>
+      <p>
+        <Link to='/'>
+          <button className="App-button colorGreen">Stop</button>
+        </Link>
+        <Link to='/settings'>
+          <button className="App-button colorCoral">Settings</button>
+        </Link>
+        <Link to='/results'>
+          <button className="App-button colorYellow">Results</button>
+        </Link>
+      </p>
+      <div>
+        <p>What Note Just Played?</p>
+        <props.ui
+          onNoteClick = {(note) => {
+            if (!trainData.guessed) {
+              setGuess(note);
+            }
+            setResult(trainData.addGuess(note));
+          }}
+        />
+        <button 
+            onClick={(e) => {
+              var note = toneGen.play_rand_note()
+              console.log(note)
+              trainData.addNote(note);
+            }}>
+          Next Note
+        </button>
+        <p>You Guessed:</p>
+        <p>{guess}{result === null ? '' : (result ? ' : Correct' : ' : Incorrect')}</p>
+      </div>
+    </div>
   );
 }
 
 function ResultsView (props) {
-  // var train_data;
-  // var onPlay;
-  // if (props.train_data == null) 
-  //   train_data = new TrainingData();
-  // else
-  //   train_data = props.train_data;
   return (
-    <header className="App App-header">
-    <h1>Results</h1> 
+    <div> 
     <p>
       <Link to='/'>
         <button className="App-button colorGreen">Start Over</button>
@@ -141,24 +186,14 @@ function ResultsView (props) {
         </button>
       </Link>
     </p>
-      <Results 
-        guesses ={train_data.guess_stack}
-        notes   ={train_data.note_stack}
-        results ={train_data.result_stack}
-        score   ={train_data.calcScore()}
-      />
-    </header>
+    <Results
+        guesses = {trainData.guess_stack}
+        notes   = {trainData.note_stack}
+        results = {trainData.result_stack}
+        score   = {trainData.calcScore()}
+    />
+  </div>
   );
 }
 
-
-const Main = () => (
-  <Switch>
-    <Route exact path='/'         component={App}></Route>
-    <Route exact path='/train'    component={TrainView}></Route>
-    <Route exact path='/settings' component={Settings}></Route>
-    <Route exact path='/results'  component={ResultsView}></Route>
-  </Switch>
-);
-
-export default Main;
+export default App;
