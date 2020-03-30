@@ -8,8 +8,6 @@ import Results from './results.js';
 import Settings from './settings.js';
 import ToneGen from './ToneGenerator';
 
-var toneGen = new ToneGen();
-
 var trainData = new TrainData();
 
 class App extends React.Component {
@@ -54,7 +52,7 @@ function PlayView (props) {
 
   useEffect(() => {
     console.log(note);
-    toneGen.play_note_button(note); 
+    new ToneGen().play_note_button(note); 
   });
   
   return (
@@ -85,7 +83,8 @@ function PlayView (props) {
 function TrainView (props) {
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState(null);
-
+  const toneGen = new ToneGen();
+  
   return (
     <div>
       <p>
@@ -109,7 +108,7 @@ function TrainView (props) {
             setResult(trainData.addGuess(note));
           }}
         />
-        <button 
+        <button className="App-button colorYellow"
             onClick={(e) => {
               var note = toneGen.play_rand_note()
               console.log(note)

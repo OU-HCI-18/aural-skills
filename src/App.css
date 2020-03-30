@@ -75,5 +75,8 @@
 .Blank-note {
   min-width: 20px;
   width: 5vmin;
-  border: none;
+  height: 0px;
+  background: transparent;
+  border: none !important;
+  font-size:0;
 }

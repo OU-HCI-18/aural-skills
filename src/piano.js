@@ -21,7 +21,7 @@ function BlackNote(props) {
 }
 function SpacerNote() {
   return (
-    <button className="Note-button Blank-note" ></button>
+    <button className="Blank-note" ></button>
   );
 }
 
@@ -55,73 +55,5 @@ function Piano(props) {
   </div>
   );
 }
-
-
-// class Piano extends React.Component {
-
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       mode: props.mode,
-//       note: '',
-//       guess: ''
-//     };
-//     this.handleGuess = this.handleGuess.bind(this);
-//     this.handlePlay = this.handlePlay.bind(this);
-//     this.handleNext = this.handleNext.bind(this);
-//     this.handleRnd = this.handleRnd.bind(this);
-
-//     this.toneGen = new ToneGen();
-//   }
-
-//   handleGuess(note) {
-//     this.props.onGuessChange(note+'4');
-//   }
-
-//   handlePlay(note) {
-//     this.toneGen.play_note_button(note);
-//     this.props.onNoteChange(note+'4');
-//   }
-
-//   handleNext() {
-//     this.props.onNoteChange(this.toneGen.play_rand_note());
-//   }
-
-//   handleRnd() {
-//     this.props.onNoteChange(this.toneGen.play_rand_note());
-//   }
-
-//   render() {
-//     var button_click;
-//     var message;
-//     var next;
-//     var next_message;
-//     var note;
-//     if (this.props.mode === 'guess') {
-//       button_click = this.handleGuess;
-//       message = "You Guessed: ";
-//       next = this.handleNext;
-//       next_message = "Play Next";
-//       note = this.props.guess;
-//     }
-//     else {
-//       button_click = this.handlePlay;
-//       message = "Note Played:";
-//       next = this.handleRnd;
-//       next_message = "Random Note";
-//       note = this.props.note;
-//     }
-//     return (
-//       <div>
-//         <NoteButtons handleClick={button_click} />
-//         <button className='App-button colorYellow' onClick={next}>
-//           {next_message}
-//         </button>
-//         <p>{message}</p>
-//         <p>{note}{this.props.result}</p>
-//       </div>
-//     );  
-//   }
-// }
 
 export default Piano;
