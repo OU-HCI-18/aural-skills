@@ -13,24 +13,16 @@ class ToneGen {
 
     this.random_note = this.random_note.bind(this);
     this.play_note = this.play_note.bind(this);
-    this.play_note_button = this.play_note_button.bind(this);
     this.play_rand_note = this.play_rand_note.bind(this);
   }
 
   random_note() {
-    // 4 = octave
-    // TODO: refactor into a property
-    // TODO: make this configurable from settings
     return note_arr[Math.floor(Math.random() * note_arr.length)];
   }
 
   play_note(note) {
     //play the note for the duration of an quarter note
     this.synth.triggerAttackRelease(note, '4n');
-  }
-
-  play_note_button(note) {
-    this.play_note(note)
   }
 
   play_rand_note() {

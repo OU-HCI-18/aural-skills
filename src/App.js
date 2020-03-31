@@ -133,7 +133,7 @@ function TrainView (props) {
               <button className="App-button colorYellow"
                   onClick={(e) => {
                     if (toneGen !== null) {
-                      toneGen.play_note_button(trainData.note_stack[0])
+                      toneGen.play_note(trainData.note_stack[0])
                     }
                   }}>
                 Replay
