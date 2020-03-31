@@ -17,7 +17,11 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      ui : "computer"
+      ui : "piano",
+      range: 2,
+      duration: '4n',
+      num: 3,
+      gap: 1
     }
 
     this.onStart = this.onStart.bind(this);
@@ -31,22 +35,25 @@ class App extends React.Component {
   }
 
   swapUI() {
-    if (this.state.ui === "computer") {
-      console.log("changing to phone");
-      this.setState({ui : "phone"});
+    if (this.state.settings.range === 1) {
+      this.setState({range : 2});
+      console.log(this.state);
     }
-    else {
-      this.setState({ui : "computer"});
+    else if (this.state.settings.range === 2) {
+      this.setState({range : 1});
+      console.log(this.state);
     }
   }
 
   render() {
     var ui;
-    if (this.state.ui === "computer") {
-      ui = Piano;
-    }
-    else {
-      ui = PianoPhone;
+    if (this.state.ui === "piano") {
+      if (this.state.range === 1) {
+        ui = PianoPhone;
+      }
+      else {
+        ui = Piano;
+      }
     }
     return(
     <header className="App App-header">
@@ -58,13 +65,30 @@ class App extends React.Component {
             <Settings />
           </Route>
           <Route path='/results'>
-            <ResultsView trainData={trainData}/>
+            <ResultsView 
+              trainData={trainData}
+            />
           </Route>
           <Route path='/train'> 
-            <TrainView trainData={trainData} replay={true} ui={ui}/> 
+            <TrainView 
+              trainData={trainData} 
+              replay={true} 
+              ui={ui}
+              range={this.state.range}
+              duration={this.state.duration}
+              num={this.state.num}
+              gap={this.state.gap}
+            /> 
           </Route>
           <Route path='/'> 
-            <PlayView onStart={this.onStart} ui={ui}/>
+            <PlayView 
+              onStart={this.onStart} 
+              ui={ui}
+              range={this.state.range}
+              duration={this.state.duration}
+              num={this.state.num}
+              gap={this.state.gap}
+            />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -134,7 +158,7 @@ function TrainView (props) {
               <button className="App-button colorYellow"
                   onClick={(e) => {
                     if (toneGen !== null) {
-                      toneGen.play_notes(notes)
+                      toneGen.play_notes(notes, props.duration, props.gap)
                     }
                   }}>
                 Replay
@@ -147,7 +171,7 @@ function TrainView (props) {
                   if (toneGen === null) {
                     toneGen = new ToneGen()
                   }
-                  var note_arr = toneGen.play_rand_seq()
+                  var note_arr = toneGen.play_rand_seq(props.num, props.duration, props.gap)
                   setNotes(note_arr);
                   console.log(note_arr)
                   trainData.addNoteArr(note_arr);
