@@ -23,8 +23,6 @@ class TrainData {
   }
 
   addGuess(note) {
-    // FIXME
-    note = note + '4'
     if (!this.guessed) {
       this.guessed = true;
       this.guess_stack.unshift(note)

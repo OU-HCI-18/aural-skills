@@ -61,7 +61,7 @@ class App extends React.Component {
             <ResultsView trainData={trainData}/>
           </Route>
           <Route path='/train'> 
-            <TrainView trainData={trainData} replay={true}ui={ui}/> 
+            <TrainView trainData={trainData} replay={true} ui={ui}/> 
           </Route>
           <Route path='/'> 
             <PlayView onStart={this.onStart} ui={ui}/>
@@ -75,16 +75,6 @@ class App extends React.Component {
 function PlayView (props) {
   // react hooks!
   const [note, setNote] = useState('');
-
-  useEffect(() => {
-    console.log(note);
-    // need to do it this way so that the AudioContext is created by the user
-    // for Chrome
-    if (toneGen === null) {
-      toneGen = new ToneGen()
-    }
-    toneGen.play_note_button(note); 
-  });
   
   return (
   <div>
@@ -102,7 +92,16 @@ function PlayView (props) {
     <div>
       <p>Play a Note:</p>
       <props.ui 
-        onNoteClick = {(note) => setNote(note)}
+        onNoteClick = {(note) => {
+          console.log(note);
+          // need to do it this way so that the AudioContext is created by the user
+          // for Chrome
+          if (toneGen === null) {
+            toneGen = new ToneGen()
+          }
+          toneGen.play_note_button(note); 
+          setNote(note)}
+        }
       />
       <p>Note Played:</p>
       <p>{note}</p>
@@ -115,7 +114,6 @@ function TrainView (props) {
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState(null);
   // const toneGen = new ToneGen();
-  
   return (
     <div>
       <p>

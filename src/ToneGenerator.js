@@ -1,6 +1,7 @@
 import { Synth, Sequence } from 'tone';
 
-var note_arr = ['C', 'C#', 'D', 'Eb','E','F', 'F#','G', 'Ab', 'A', 'Bb', 'B', ];
+var note_arr = ['C4', 'C#4', 'D4', 'Eb4','E4','F4', 'F#4','G4', 'Ab4', 'A4', 'Bb4', 'B4',
+                'C5', 'C#5', 'D5', 'Eb5','E5','F5', 'F#5','G5', 'Ab5', 'A5', 'Bb5', 'B5'];
 
 /*
 This is a stateless, non-rendering tone generate. It does one thing: plays notes 
@@ -20,7 +21,7 @@ class ToneGen {
     // 4 = octave
     // TODO: refactor into a property
     // TODO: make this configurable from settings
-    return note_arr[Math.floor(Math.random() * note_arr.length)] + '4';
+    return note_arr[Math.floor(Math.random() * note_arr.length)];
   }
 
   play_note(note) {
@@ -29,7 +30,7 @@ class ToneGen {
   }
 
   play_note_button(note) {
-    this.play_note(note+'4')
+    this.play_note(note)
   }
 
   play_rand_note() {
