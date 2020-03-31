@@ -1,14 +1,15 @@
 
 # Project information
-Website for aural training, create with nodeJS, react native, and love.
+Website for aural training, created with nodeJS, react native, and love.
 
 To run this locally:
 0. Open a terminal, run `git clone https://github.com/OU-HCI-18/website.git` and `cd website`
 1. Install [nodeJS](https://nodejs.org/en/)
 2. Go back to the terminal open to this project
-3. Install [ToneJS](https://tonejs.github.io/) by running `npm install Tone`.
+3. Install [ToneJS](https://tonejs.github.io/) and other dependencies by running `npm install`.
 4. Run `npm start`
 5. Hack away and view the changes you make live!
+6. To deploy, run `npm run deploy`
 
 # Information from creating the website via the Create React App script
 
