@@ -19,7 +19,8 @@
 
 .App-button {
   height: 10vmin;
-  width: 15vw;
+  width: 10vw;
+  min-width: 100px;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   border: black;

@@ -61,7 +61,7 @@ class App extends React.Component {
             <ResultsView trainData={trainData}/>
           </Route>
           <Route path='/train'> 
-            <TrainView trainData={trainData} ui={ui}/> 
+            <TrainView trainData={trainData} replay={true}ui={ui}/> 
           </Route>
           <Route path='/'> 
             <PlayView onStart={this.onStart} ui={ui}/>
@@ -130,28 +130,39 @@ function TrainView (props) {
         </Link>
       </p>
       <div className="App">
-        <p>What Note Just Played?</p>
-        <props.ui
-          onNoteClick = {(note) => {
-            if (!trainData.guessed) {
-              setGuess(note);
+        <div>
+          {props.replay && 
+              <button className="App-button colorYellow"
+                  onClick={(e) => {
+                    if (toneGen !== null) {
+                      toneGen.play_note_button(trainData.note_stack[0])
+                    }
+                  }}>
+                Replay
+              </button>
             }
-            setResult(trainData.addGuess(note));
-          }}
-        />
-        <button className="App-button colorYellow"
-            onClick={(e) => {
-              // need to do it this way so that the AudioContext is created by the user
-              // for Chrome
-              if (toneGen === null) {
-                toneGen = new ToneGen()
+            <button className="App-button colorGreen"
+                onClick={(e) => {
+                  // need to do it this way so that the AudioContext is created by the user
+                  // for Chrome
+                  if (toneGen === null) {
+                    toneGen = new ToneGen()
+                  }
+                  var note = toneGen.play_rand_note()
+                  console.log(note)
+                  trainData.addNote(note);
+                }}>
+              Next Note
+            </button>
+          </div>
+          <props.ui
+            onNoteClick = {(note) => {
+              if (!trainData.guessed) {
+                setGuess(note);
               }
-              var note = toneGen.play_rand_note()
-              console.log(note)
-              trainData.addNote(note);
-            }}>
-          Next Note
-        </button>
+              setResult(trainData.addGuess(note));
+            }}
+          />
         <p>You Guessed:</p>
         <p>{guess}{result === null ? '' : (result ? ' : Correct' : ' : Incorrect')}</p>
       </div>
