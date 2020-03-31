@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
@@ -35,11 +35,11 @@ class App extends React.Component {
   }
 
   swapUI() {
-    if (this.state.settings.range === 1) {
+    if (this.state.range === 1) {
       this.setState({range : 2});
       console.log(this.state);
     }
-    else if (this.state.settings.range === 2) {
+    else if (this.state.range === 2) {
       this.setState({range : 1});
       console.log(this.state);
     }
