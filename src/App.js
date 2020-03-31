@@ -99,7 +99,7 @@ function PlayView (props) {
           if (toneGen === null) {
             toneGen = new ToneGen()
           }
-          toneGen.play_note_button(note); 
+          toneGen.play_note(note); 
           setNote(note)}
         }
       />
@@ -111,6 +111,7 @@ function PlayView (props) {
 }
 
 function TrainView (props) {
+  const [notes, setNotes] = useState('');
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState(null);
   // const toneGen = new ToneGen();
@@ -133,7 +134,7 @@ function TrainView (props) {
               <button className="App-button colorYellow"
                   onClick={(e) => {
                     if (toneGen !== null) {
-                      toneGen.play_note(trainData.note_stack[0])
+                      toneGen.play_notes(notes)
                     }
                   }}>
                 Replay
@@ -146,9 +147,10 @@ function TrainView (props) {
                   if (toneGen === null) {
                     toneGen = new ToneGen()
                   }
-                  var note = toneGen.play_rand_note()
-                  console.log(note)
-                  trainData.addNote(note);
+                  var note_arr = toneGen.play_rand_seq()
+                  setNotes(note_arr);
+                  console.log(note_arr)
+                  trainData.addNoteArr(note_arr);
                 }}>
               Next Note
             </button>

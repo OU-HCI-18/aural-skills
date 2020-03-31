@@ -18,12 +18,13 @@
 }
 
 .App-button {
-  height: 10vmin;
-  width: 10vw;
-  min-width: 100px;
+  height: 8vmin;
+  width: 8vw;
+  min-width: 120px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(14px + 1vmin);
   border: black;
+  white-space: nowrap;
 }
 
 .Results-table {
