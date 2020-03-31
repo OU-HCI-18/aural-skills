@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
@@ -9,17 +9,18 @@ import Settings from './settings.js';
 import ToneGen from './ToneGenerator';
 
 var trainData = new TrainData();
+var toneGen = null;
 
 class App extends React.Component {
   
   constructor(props) {
     super(props);
-    // this.trainData = new TrainingData();
     this.onStart = this.onStart.bind(this);
   }
   onStart() {
     console.log("resetting train data");
     trainData = new TrainData();
+    toneGen = new ToneGen();
   }
 
   render() {
@@ -52,7 +53,12 @@ function PlayView (props) {
 
   useEffect(() => {
     console.log(note);
-    new ToneGen().play_note_button(note); 
+    // need to do it this way so that the AudioContext is created by the user
+    // for Chrome
+    if (toneGen === null) {
+      toneGen = new ToneGen()
+    }
+    toneGen.play_note_button(note); 
   });
   
   return (
@@ -83,7 +89,7 @@ function PlayView (props) {
 function TrainView (props) {
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState(null);
-  const toneGen = new ToneGen();
+  // const toneGen = new ToneGen();
   
   return (
     <div>
@@ -98,7 +104,7 @@ function TrainView (props) {
           <button className="App-button colorYellow">Results</button>
         </Link>
       </p>
-      <div>
+      <div className="App">
         <p>What Note Just Played?</p>
         <props.ui
           onNoteClick = {(note) => {
@@ -110,6 +116,11 @@ function TrainView (props) {
         />
         <button className="App-button colorYellow"
             onClick={(e) => {
+              // need to do it this way so that the AudioContext is created by the user
+              // for Chrome
+              if (toneGen === null) {
+                toneGen = new ToneGen()
+              }
               var note = toneGen.play_rand_note()
               console.log(note)
               trainData.addNote(note);
