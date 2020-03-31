@@ -16,7 +16,7 @@ class ToneGen {
   }
 
   random_note(range=1) {
-    return note_arr[Math.floor(Math.random() * note_arr.length * 2/range)];
+    return note_arr[Math.floor(Math.random() * note_arr.length * range/2)];
   }
 
   play_note(note, duration='4n') {
