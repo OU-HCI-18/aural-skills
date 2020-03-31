@@ -3,7 +3,7 @@ import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import TrainData from './train.js';
-import Piano from './piano.js';
+import {Piano , PianoPhone} from './piano.js';
 import Results from './results.js';
 import Settings from './settings.js';
 import ToneGen from './ToneGenerator';
@@ -15,18 +15,43 @@ class App extends React.Component {
   
   constructor(props) {
     super(props);
+
+    this.state = {
+      ui : "computer"
+    }
+
     this.onStart = this.onStart.bind(this);
+    this.swapUI = this.swapUI.bind(this);
   }
+
   onStart() {
     console.log("resetting train data");
     trainData = new TrainData();
     toneGen = new ToneGen();
   }
 
+  swapUI() {
+    if (this.state.ui === "computer") {
+      console.log("changing to phone");
+      this.setState({ui : "phone"});
+    }
+    else {
+      this.setState({ui : "computer"});
+    }
+  }
+
   render() {
+    var ui;
+    if (this.state.ui === "computer") {
+      ui = Piano;
+    }
+    else {
+      ui = PianoPhone;
+    }
     return(
     <header className="App App-header">
       <h1>Aural Training</h1> 
+      <button onClick={(e) => this.swapUI()}>UI</button>
       <BrowserRouter>
         <Switch>
           <Route path='/settings'>
@@ -36,10 +61,10 @@ class App extends React.Component {
             <ResultsView trainData={trainData}/>
           </Route>
           <Route path='/train'> 
-            <TrainView trainData={trainData} ui={Piano}/> 
+            <TrainView trainData={trainData} ui={ui}/> 
           </Route>
           <Route path='/'> 
-            <PlayView onStart={this.onStart} ui={Piano}/> 
+            <PlayView onStart={this.onStart} ui={ui}/>
           </Route>
         </Switch>
       </BrowserRouter>
@@ -75,7 +100,7 @@ function PlayView (props) {
       </Link>
     </p>
     <div>
-      <p>Play a note!</p>
+      <p>Play a Note:</p>
       <props.ui 
         onNoteClick = {(note) => setNote(note)}
       />

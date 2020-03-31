@@ -1,8 +1,10 @@
 
 # Project information
+
 Website for aural training, created with nodeJS, react native, and love.
 
 To run this locally:
+
 0. Open a terminal, run `git clone https://github.com/OU-HCI-18/website.git` and `cd website`
 1. Install [nodeJS](https://nodejs.org/en/)
 2. Go back to the terminal open to this project
@@ -10,6 +12,22 @@ To run this locally:
 4. Run `npm start`
 5. Hack away and view the changes you make live!
 6. To deploy, run `npm run deploy`
+
+## TODO
+
+- [x] Add a todo list to github
+- [x] create piano, staff, settings branches
+- [] debug the piano input - Jack
+- [] create a staff input
+- [] write-up settings page description (possible values etc) - Michael
+- [] create a settings page - Noah
+- [] write the tone generation algorithm (psudeo-code) - Scottie / Howey
+
+Then, we can:
+
+- [] get user feedback, round 2
+- [] implement any necessary changes
+- [] work on the final report and usability analysis
 
 # Information from creating the website via the Create React App script
 

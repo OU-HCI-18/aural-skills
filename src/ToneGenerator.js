@@ -1,6 +1,6 @@
-import { Synth } from 'tone';
+import { Synth, Sequence } from 'tone';
 
-var note_arr = ['C', 'C#','D', 'Eb','E','F', 'F#','G', 'Ab', 'A', 'Bb', 'B', ];
+var note_arr = ['C', 'C#', 'D', 'Eb','E','F', 'F#','G', 'Ab', 'A', 'Bb', 'B', ];
 
 /*
 This is a stateless, non-rendering tone generate. It does one thing: plays notes 
@@ -35,7 +35,16 @@ class ToneGen {
   play_rand_note() {
     var note = this.random_note();
     this.play_note(note);
+  
     return note;
+  }
+
+  play_seq(num_notes) {
+    new Sequence(function(time, note){
+      console.log(note);
+    //straight quater notes
+    }, ["C4", "E4", "G4", "A4"], "4n");   
+ 
   }
 }
 

@@ -35,8 +35,41 @@ function Piano(props) {
     <WhiteNote name={'A'} onNoteClick={props.onNoteClick} />
       <BlackNote name={'Bb'} onNoteClick={props.onNoteClick} />
     <WhiteNote name={'B'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'C'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'C#'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'D'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Eb'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'E'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'F'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'F#'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'G'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Ab'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'A'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Bb'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'B'} onNoteClick={props.onNoteClick} />
   </div>
   );
 }
 
+function PianoPhone(props) {
+  return (
+  <div className="piano phone">
+    <WhiteNote name={'C'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'C#'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'D'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Eb'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'E'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'F'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'F#'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'G'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Ab'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'A'} onNoteClick={props.onNoteClick} />
+      <BlackNote name={'Bb'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'B'} onNoteClick={props.onNoteClick} />
+  </div>
+  );
+}
+
+
+export {Piano, PianoPhone};
 export default Piano;
