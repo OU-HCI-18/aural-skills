@@ -1,0 +1,77 @@
+// The following is pseudo-ish-code that, given certain settings, will generate a
+// series of tones. This is written for one octave but Scottie can easily adapt it for
+// two.
+
+// Throughout this algorithm, pitches will be represented using ints. To translate the
+// int into a pitch, count half-steps from C4.
+
+// Settings: these should be imported from elsewhere
+int numNotes; // # of notes to be played, valid values: 1+
+int maxLeap; // maximum interval between notes, valid values: 2 through 8
+String mode; // name of a mode to be played; for now, just {"major","minor"} (enum?)
+
+// Assemble usable values based on settings
+int[] scale; // this will hold a set of ints representing chromatic distance from C4
+switch (mode)
+{
+	case ("major"):
+		scale = new int[0,2,4,5,7,9,11,12];
+		break;
+	case ("minor"):
+		scale = new int[1,2,3,5,7,8,10,11,12];
+		break;
+}
+// Next, we're going to translate the maximum interval into chromatic distance
+switch (maxLeap)
+{
+	case (2):
+		maxLeap = 2;
+		break;
+	case (3):
+		maxLeap = 4;
+		break;
+	case (4):
+		maxLeap = 5;
+		break;
+	case (5):
+		maxLeap = 7;
+		break;
+	case (6):
+		maxLeap = 9;
+		break;
+	case (7):
+		maxLeap = 11;
+		break;
+	case (8):
+		maxLeap = 12;
+		break;
+}
+// note: based on accepted values, neither switch statement requires "default" branch
+
+// Generate tones using our parameters
+int curr; // store current note
+int last; // store last note played
+
+// Generate and play first tone
+curr = rand(scale); // draw a random value from set (int[] scale)
+play(curr); // generate tone
+addToStack(curr); // add this tone to a stack for replaying/scoring
+last = curr; // update last
+
+// Generate subsequent tones
+for (int noteCounter = 1; noteCounter < numNotes; ++noteCounter)
+{
+	curr = rand(scale);
+	while (abs(curr - last) > maxLeap) // this loop checks to see whether the
+						// selected note is valid based on
+						// maximum interval distance.
+						// Loop until valid note is found.
+	{	
+		curr = rand(scale);
+	} // upon exiting the loop, we know curr represents a valid note
+	play(curr);
+	addToStack(curr);
+	last = curr;
+	// note: the above three statements always appear together and could be
+	// lumped into a function, if you so desire
+}
