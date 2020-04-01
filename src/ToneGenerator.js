@@ -2,7 +2,9 @@ import Tone from 'tone';
                 // 0    1       2     3     4     5     6       7     8     9     10      11  
 const note_arr = ['C4', 'C#4', 'D4', 'Eb4', 'E4', 'F4', 'F#4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4',
                 // 12   13      14    15    16    17    18     19    20     21    22      22
-                  'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5'];
+                  'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5',
+                // 23
+                  'C6'];
 
 var max_leap_arr = [0,1,2,4,5,7,9,11,12];
 
@@ -29,8 +31,32 @@ class ToneGen {
   num_notes;
   prev_note_index = -1;
 
-  constructor(num_notes=3, max_leap=3, mode="major") {
-    
+  constructor(
+      num_notes = 3, 
+      max_leap = 3, 
+      mode = "major", 
+      synth = {
+        "oscillator" : {
+          "type" : "triangle"
+        },
+        "envelope" : {
+          "attackCurve" : "exponential",
+          "attack" : 0.02,
+          "decayCurve" : "exponential",
+          "decay" : 0.01,
+          "sustain" : 0.2,
+          "releaseCurve" : "exponential",
+          "release" : 0.4,
+        },
+        "portamento" : 0.0,
+        "volume" : -12
+      }
+    ) 
+  {
+    this.synth = new Tone.Synth(synth).toMaster();
+    // this.synth = new Tone.Synth(new Tone.Oscillator({type: "triangle"}), synth).toMaster();;
+    // this.synth.volume.value = -4;
+
     switch (mode) {
       case "major" : this.int_note_arr = [0,1,2,4,5,6,9,11,12]; // [C, C#, D, E, F, F#, A, B, C]
         break;
@@ -42,8 +68,6 @@ class ToneGen {
     this.max_leap = max_leap;
 
     this.num_notes = num_notes;
-
-    this.synth = new Tone.Synth().toMaster();
 
     this.random_note = this.random_note.bind(this);
     this.play_note = this.play_note.bind(this);
