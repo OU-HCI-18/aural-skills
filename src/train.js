@@ -25,14 +25,14 @@ class TrainData {
       this.guess_stack.unshift('-');
     }
     for (var i in note_arr) {
-      console.log("note: " + note_arr[i]);
+      // console.log("note: " + note_arr[i]);
       this.note_stack.unshift(note_arr[i]);
     }
   }
 
   addGuess(note) {
     if (this.guess_stack.length !== this.note_stack.length) {
-      console.log("guess: " + note + " : " + this.note_stack.length - this.guess_stack.length)
+      // console.log("guess:" + note + " : " + this.note_stack.length - this.guess_stack.length)
       console.log(this.note_stack)
       this.guess_stack.unshift(note)
       this.result_stack.unshift(

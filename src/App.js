@@ -171,9 +171,9 @@ function TrainView (props) {
                   if (toneGen === null) {
                     toneGen = new ToneGen()
                   }
-                  var note_arr = toneGen.play_rand_seq(props.num, props.duration, props.gap)
+                  var note_arr = toneGen.play_rand_seq(props.duration, props.gap)
                   setNotes(note_arr);
-                  console.log(note_arr)
+                  // console.log(note_arr)
                   trainData.addNoteArr(note_arr);
                 }}>
               Next Note
