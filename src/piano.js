@@ -47,6 +47,7 @@ function Piano(props) {
     <WhiteNote name={'A5'} onNoteClick={props.onNoteClick} />
       <BlackNote name={'Bb5'} onNoteClick={props.onNoteClick} />
     <WhiteNote name={'B5'} onNoteClick={props.onNoteClick} />
+      <WhiteNote name={'C6'} onNoteClick={props.onNoteClick} />
   </div>
   );
 }
@@ -66,6 +67,7 @@ function PianoPhone(props) {
     <WhiteNote name={'A4'} onNoteClick={props.onNoteClick} />
       <BlackNote name={'Bb4'} onNoteClick={props.onNoteClick} />
     <WhiteNote name={'B4'} onNoteClick={props.onNoteClick} />
+    <WhiteNote name={'C5'} onNoteClick={props.onNoteClick} />
   </div>
   );
 }
