@@ -6,19 +6,17 @@ const note_arr = ['C4', 'C#4', 'D4', 'Eb4', 'E4', 'F4', 'F#4', 'G4', 'Ab4', 'A4'
                 // 23
                   'C6'];
 
-var max_leap_arr = [0,1,2,4,5,7,9,11,12];
-
 function rand(num) {
   return Math.floor(Math.random() * num);
 }
-// return a number between min_val (inclusive) and max_val (exclusive)
-// 
+// return a number in the range
+//  [max(min_val, prev_val-max_leap), min(max_val, prev_val+max_leap)]
+// (end values inclusive)
 function rand_leap_between(prev_val, max_leap, max_val, min_val = 0) {
   // return an array with every element +- max_leap distance away from prev_note_index
   // random number between x1 .. x2
   var x1 = Math.max(min_val, prev_val - max_leap);
   var x2 = Math.min(prev_val + max_leap, max_val);
-  console.log("between:",x1,x2,x2-x1);
   return x1 + Math.floor(Math.random() * (x2 - x1 + 1));
 }
 /*
@@ -63,10 +61,7 @@ class ToneGen {
       case "minor" : this.int_note_arr = [1,2,3,5,7,8,10,11,12];
         break;
     }
-    // use an array instead of a switch here
-    // this.max_leap = (max_leap < 9) ? max_leap_arr[max_leap] : max_leap;
     this.max_leap = max_leap;
-
     this.num_notes = num_notes;
 
     this.random_note = this.random_note.bind(this);
@@ -80,9 +75,9 @@ class ToneGen {
       this.prev_note_index = rand(this.int_note_arr.length)
       return note_arr[this.int_note_arr[this.prev_note_index]];
     } else {
-      console.log("rand_note: ", this.prev_note_index, this.max_leap, this.int_note_arr.length);
+      // console.log("rand_note: ", this.prev_note_index, this.max_leap, this.int_note_arr.length);
       this.prev_note_index = rand_leap_between(this.prev_note_index, this.max_leap, this.int_note_arr.length - 1);
-      console.log("note:", this.prev_note_index, note_arr[this.int_note_arr[this.prev_note_index]])
+      // console.log("note:", this.prev_note_index, note_arr[this.int_note_arr[this.prev_note_index]])
       return note_arr[this.int_note_arr[this.prev_note_index]];
     }
   }
