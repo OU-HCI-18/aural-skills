@@ -158,6 +158,7 @@ function TrainView (props) {
               <button className="App-button colorYellow"
                   onClick={(e) => {
                     if (toneGen !== null) {
+                      console.log("replay:", notes);
                       toneGen.play_notes(notes, props.duration, props.gap)
                     }
                   }}>
@@ -173,7 +174,7 @@ function TrainView (props) {
                   }
                   var note_arr = toneGen.play_rand_seq(props.duration, props.gap)
                   setNotes(note_arr);
-                  // console.log(note_arr)
+                  console.log(note_arr)
                   trainData.addNoteArr(note_arr);
                 }}>
               Next Note
