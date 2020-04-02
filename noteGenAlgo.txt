@@ -75,3 +75,71 @@ for (int noteCounter = 1; noteCounter < numNotes; ++noteCounter)
 	// note: the above three statements always appear together and could be
 	// lumped into a function, if you so desire
 }
+
+
+/********************************************************************
+	Here's how Jack actually implemented it (slightly simplified)
+		see the toneGen branch for full implemnetation
+********************************************************************/
+
+// first, define our rand functions
+
+// random number between 0 (inclusive) and num (exclusive)
+
+function rand(num) {
+  return Math.floor(Math.random() * num);
+}
+
+// get a random element from the specified array
+
+function rand_array(array) {
+  return array[rand(array.length)]
+}
+
+// scans through the array the get the notes that are allowed 
+// eg in the interval [prev_note - max_leap, prev_note + max_leap]
+
+function allowed_notes(array, prev_note, max_leap) {
+  var i = 0;
+  var x1;
+  var x2;
+  // this is guaranteed to not go off the end of the array
+  while (array[i] < (prev_note - max_leap)) {
+    i += 1;
+  }
+  x1 = i;
+  // bounds checking
+  while ((i < array.length) && (array[i] < prev_note + max_leap)) {
+    i += 1;
+  }
+  x2 = i;
+  // return elements array[x1] to array[x2+1]
+  return array.slice(x1,x2+1);
+}
+
+// this code is basically in the constructor for the "class" we're constructing here
+// eg it's executed once
+
+function init_tone_gen(mode, num_notes, max_leap) {
+    switch (mode) {
+      case "major" : note_arr = [0,2,4,5,7,9,11,12];
+        break;
+      case "minor" : note_arr = [1,2,3,5,7,8,10,11,12];
+        break;
+    }
+	prev_note = -1;
+}
+
+function random_note() {
+    // sentinel: no previous note exists
+    if (prev_note === -1) 
+	{
+      prev_note = rand(note_arr)
+      play(prev_note)
+    } 
+	else 
+	{
+      prev_note = rand_array(allowed_notes(note_arr, prev_note, max_leap))
+      play(prev_note)
+    }
+  }
