@@ -113,8 +113,8 @@ function allowed_notes(array, prev_note, max_leap) {
     i += 1;
   }
   x2 = i;
-  // return elements array[x1] to array[x2+1]
-  return array.slice(x1,x2+1);
+  // return elements array[x1] to array[x2]
+  return array[x1 : x2]
 }
 
 // this code is basically in the constructor for the "class" we're constructing here
