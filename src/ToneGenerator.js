@@ -33,21 +33,10 @@ function rand_array(array) {
   console.log("selcting from:", array, array[i]);
   return array[i]
 }
-// return a number in the range
-//  [max(min_val, prev_val-max_leap), min(max_val, prev_val+max_leap)]
-// (end values inclusive)
-function rand_leap_between(array, prev_val, max_leap, max_val, min_val = 0) {
-  var n1 = array[prev_val] - max_leap;
-  var n2 = array[prev_val] + max_leap
-
-  // return an array with every element +- max_leap distance away from prev_note_index
-  // random number between x1 .. x2
-  var x1 = Math.max(min_val, prev_val - max_leap);
-  var x2 = Math.min(prev_val + max_leap, max_val);
-  return x1 + Math.floor(Math.random() * (x2 - x1 + 1));
-}
 /*
-This is a stateless, non-rendering tone generate. It does one thing: plays notes 
+This is a stateful, non-rendering tone generate. It does one thing: plays notes
+It's stateful because it keeps track of the previous note played and the settings
+(locked at the time of construction)
 */
 class ToneGen {
   
@@ -57,27 +46,27 @@ class ToneGen {
   prev_note_index = -1;
   prev_note = -1;
 
-  constructor(
-      num_notes = 3, 
-      max_leap = 4, 
-      mode = "major", 
-      synth = {
-        "oscillator" : {
-          "type" : "triangle"
-        },
-        "envelope" : {
-          "attackCurve" : "exponential",
-          "attack" : 0.02,
-          "decayCurve" : "exponential",
-          "decay" : 0.01,
-          "sustain" : 0.2,
-          "releaseCurve" : "exponential",
-          "release" : 0.4,
-        },
-        "portamento" : 0.0,
-        "volume" : -12
-      }
-    ) 
+  constructor (
+    num_notes = 3, 
+    max_leap = 4, 
+    mode = "major", 
+    synth = {
+      "oscillator" : {
+        "type" : "triangle"
+      },
+      "envelope" : {
+        "attackCurve" : "exponential",
+        "attack" : 0.02,
+        "decayCurve" : "exponential",
+        "decay" : 0.01,
+        "sustain" : 0.2,
+        "releaseCurve" : "exponential",
+        "release" : 0.4,
+      },
+      "portamento" : 0.0,
+      "volume" : -12
+    }
+  ) 
   {
     this.synth = new Tone.Synth(synth).toMaster();
     // this.synth = new Tone.Synth(new Tone.Oscillator({type: "triangle"}), synth).toMaster();;
@@ -103,9 +92,6 @@ class ToneGen {
       this.prev_note = this.int_note_arr[rand(this.int_note_arr.length)]
       return note_arr[this.prev_note];
     } else {
-      // console.log("rand_note: ", this.prev_note_index, this.max_leap, this.int_note_arr.length);
-      // this.prev_note_index = rand_leap_between(this.prev_note_index, this.max_leap, this.int_note_arr.length - 1);
-      // console.log("note:", this.prev_note_index, note_arr[this.int_note_arr[this.prev_note_index]])
       this.prev_note = rand_array(allowed_notes(this.int_note_arr, this.prev_note, this.max_leap))
       return note_arr[this.prev_note];
     }
