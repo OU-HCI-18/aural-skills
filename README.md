@@ -17,17 +17,25 @@ To run this locally:
 
 - [x] Add a todo list to github
 - [x] create piano, staff, settings branches
-- [] debug the piano input - Jack
+- [x] debug the piano input - Jack
 - [] create a staff input
-- [] write-up settings page description (possible values etc) - Michael
+- [x] write-up settings page description (possible values etc) - Michael
 - [] create a settings page - Noah
-- [] write the tone generation algorithm (psudeo-code) - Scottie / Howey
+- [x] write the tone generation algorithm (psudeo-code) - Scottie
+- [x] implement the tone generation algorithm - Jack
+- [] extend tone generation algorithm to two octaves
+- [] implement extended algorithm
 
 Then, we can:
 
 - [] get user feedback, round 2
 - [] implement any necessary changes
 - [] work on the final report and usability analysis
+
+Planned Features (not implemented yet, low priority):
+
+- [] hover note labels
+- [] different instrument options in the settings
 
 # Information from creating the website via the Create React App script
 
