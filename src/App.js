@@ -17,11 +17,38 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      ui : "piano",
-      range: 2,
-      duration: '4n',
-      num: 3,
-      gap: 1
+      // all settings for the app are stored here
+      ui : "piano",   // ui to use
+      
+      replay : true,  // allow the user to replay notes
+      
+      max_leap : 3,   // maximum interval of toneGen
+      mode : "major", // mode of toneGen
+      num_notes: 3,   // number of notes to play at a time
+      range: 2,       // range of toneGen
+      gap : 1,        // seconds gap between notest
+      duration: '4n', // note duration
+      // synth to use
+      // this is a nested object. That's usually bad
+      // this means it will be hard to update 
+      // (eg setState({synth : synth_obj}) will set this object,
+      // NOT merge with it
+      synth : {
+        "oscillator" : {
+          "type" : "triangle"
+        },
+        "envelope" : {
+          "attackCurve" : "exponential",
+          "attack" : 0.02,
+          "decayCurve" : "exponential",
+          "decay" : 0.03,
+          "sustain" : 0.4,
+          "releaseCurve" : "exponential",
+          "release" : 0.5,
+        },
+        "portamento" : 0.0,
+        "volume" : -15
+      }
     }
 
     this.onStart = this.onStart.bind(this);
@@ -31,21 +58,21 @@ class App extends React.Component {
   onStart() {
     console.log("resetting train data");
     trainData = new TrainData();
-    toneGen = new ToneGen();
+    toneGen = new ToneGen(this.state);
   }
 
   swapUI() {
     if (this.state.range === 1) {
       this.setState({range : 2});
-      console.log(this.state);
     }
     else if (this.state.range === 2) {
       this.setState({range : 1});
-      console.log(this.state);
     }
+    toneGen = new ToneGen(this.state)
   }
 
   render() {
+    console.log("this.state.gap", this.state.gap);
     var ui;
     if (this.state.ui === "piano") {
       if (this.state.range === 1) {
@@ -58,7 +85,6 @@ class App extends React.Component {
     return(
     <header className="App App-header">
       <h1>Aural Training</h1> 
-      <button onClick={(e) => this.swapUI()}>UI</button>
       <BrowserRouter>
         <Switch>
           <Route path='/settings'>
@@ -71,23 +97,30 @@ class App extends React.Component {
           </Route>
           <Route path='/train'> 
             <TrainView 
-              trainData={trainData} 
-              replay={true} 
-              ui={ui}
-              range={this.state.range}
-              duration={this.state.duration}
-              num={this.state.num}
-              gap={this.state.gap}
+              trainData = {trainData} 
+              replay = {this.state.replay} 
+              ui = {ui}
+              duration = {this.state.duration}
+              max_leap = {this.state.max_leap}
+              mode = {this.state.mode}
+              num_notes = {this.state.num_notes}
+              range = {this.state.range}
+              gap = {this.state.gap}
+              synth = {this.state.synth}
             /> 
           </Route>
           <Route path='/'> 
             <PlayView 
+              swapUI={this.swapUI}
               onStart={this.onStart} 
               ui={ui}
-              range={this.state.range}
-              duration={this.state.duration}
-              num={this.state.num}
-              gap={this.state.gap}
+              duration = {this.state.duration}
+              max_leap = {this.state.max_leap}
+              mode = {this.state.mode}
+              num_notes = {this.state.num_notes}
+              range = {this.state.range}
+              gap = {this.state.gap}
+              synth = {this.state.synth}
             />
           </Route>
         </Switch>
@@ -102,6 +135,7 @@ function PlayView (props) {
   
   return (
   <div>
+    <button className="App-button colorPurple" onClick={(e) => props.swapUI()}>UI</button>
     <p>
       <Link to='/train'>
         <button className="App-button colorGreen" onClick={props.onStart}>Start</button>
@@ -121,7 +155,7 @@ function PlayView (props) {
           // need to do it this way so that the AudioContext is created by the user
           // for Chrome
           if (toneGen === null) {
-            toneGen = new ToneGen()
+            toneGen = new ToneGen(props)
           }
           toneGen.play_note(note); 
           setNote(note)}
@@ -159,7 +193,7 @@ function TrainView (props) {
                   onClick={(e) => {
                     if (toneGen !== null) {
                       console.log("replay:", notes);
-                      toneGen.play_notes(notes, props.duration, props.gap)
+                      toneGen.play_notes(notes)
                     }
                   }}>
                 Replay
@@ -170,11 +204,11 @@ function TrainView (props) {
                   // need to do it this way so that the AudioContext is created by the user
                   // for Chrome
                   if (toneGen === null) {
-                    toneGen = new ToneGen()
+                    toneGen = new ToneGen(props)
                   }
-                  var note_arr = toneGen.play_rand_seq(props.duration, props.gap)
+                  var note_arr = toneGen.play_rand_seq()
                   setNotes(note_arr);
-                  console.log(note_arr)
+                  console.log(note_arr);
                   trainData.addNoteArr(note_arr);
                 }}>
               Next Note

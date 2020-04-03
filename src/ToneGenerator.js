@@ -12,7 +12,6 @@ function rand(num) {
 
 // scan through the array the get the notes that are allowed (in the interval)
 function allowed_notes(array, prev_val, max_leap) {
-  console.log(prev_val, "+-", max_leap);
   var i = 0;
   var x1;
   var x2;
@@ -25,55 +24,67 @@ function allowed_notes(array, prev_val, max_leap) {
     i += 1;
   }
   x2 = i;
-  console.log(x1,x2)
   return array.slice(x1,x2+1);
 }
 function rand_array(array) {
   var i = rand(array.length)
-  console.log("selcting from:", array, array[i]);
   return array[i]
 }
 /*
 This is a stateful, non-rendering tone generate. It does one thing: plays notes
 It's stateful because it keeps track of the previous note played and the settings
 (locked at the time of construction)
+
+This is currently NOT a React component. It probably should be? 
+  (so that react will auto-rebuild when props changes)
 */
 class ToneGen {
   
-  scale = [];
+  scale = []; // built from mode and range
   max_leap;
   num_notes;
-  prev_note_index = -1;
+  duration;
+  gap;
   prev_note = -1;
+  
 
-  constructor (
-    num_notes = 3, 
-    max_leap = 4, 
-    range = 2,
-    mode = "major", 
-    synth = {
-      "oscillator" : {
-        "type" : "triangle"
-      },
-      "envelope" : {
-        "attackCurve" : "exponential",
-        "attack" : 0.02,
-        "decayCurve" : "exponential",
-        "decay" : 0.01,
-        "sustain" : 0.2,
-        "releaseCurve" : "exponential",
-        "release" : 0.4,
-      },
-      "portamento" : 0.0,
-      "volume" : -12
+  constructor (props = 
+    {
+      duration : '4n',
+      max_leap : 4, 
+      mode : "major", 
+      num_notes : 3, 
+      range : 2,
+      gap : 1,
+      synth : {
+          "oscillator" : {
+            "type" : "triangle"
+          },
+          "envelope" : {
+            "attackCurve" : "exponential",
+            "attack" : 0.01,
+            "decayCurve" : "exponential",
+            "decay" : 0.01,
+            "sustain" : 0.1,
+            "releaseCurve" : "exponential",
+            "release" : 0.3,
+          },
+          "portamento" : 0.0,
+          "volume" : -12
+        }
     }
-  ) 
+  )
   {
-    this.synth = new Tone.Synth(synth).toMaster();
-    // this.synth = new Tone.Synth(new Tone.Oscillator({type: "triangle"}), synth).toMaster();;
-    // this.synth.volume.value = -4;
+    console.log("building toneGen with props", props);
 
-    switch (mode) {
+    // store params
+    this.duration = props.duration;
+    this.max_leap = props.max_leap;
+    this.num_notes = props.num_notes;
+    this.gap = props.gap;
+
+    // build scale from props.mode and props.range
+    switch (props.mode) {
       case ("major"):
         this.scale = [0,2,4,5,7,9,11,12,14,16,17,19,21,23,24];
         break;
@@ -87,19 +98,20 @@ class ToneGen {
         this.scale = [0,2,4,7,9,12,14,16,19,21,24];
         break;
       case("chromatic"):
+      default:
         this.scale = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
-        break;
     }
     // range check
-    if (range === 1) {
+    if (props.range === 1) {
       // find first element off the end (= C5 = 12)
       var last = this.scale.findIndex(e => e > 12); // find first element > 12
       this.scale = this.scale.slice(0, last);
     }
 
-    this.max_leap = max_leap;
-    this.num_notes = num_notes;
+    // build synth from props.synth
+    this.synth = new Tone.Synth(props.synth).toMaster();
 
+    // js is weird, need to do this for every function that uses `this`
     this.random_note = this.random_note.bind(this);
     this.play_note = this.play_note.bind(this);
     this.play_rand_note = this.play_rand_note.bind(this);
@@ -108,41 +120,40 @@ class ToneGen {
   random_note() {
     // sentinel: no previous note exists
     if (this.prev_note === -1) {
-      this.prev_note = this.scale[rand(this.scale.length)]
+      this.prev_note = this.scale[rand(this.scale.length)];
       return note_arr[this.prev_note];
     } else {
-      this.prev_note = rand_array(allowed_notes(this.scale, this.prev_note, this.max_leap))
+      this.prev_note = rand_array(allowed_notes(this.scale, this.prev_note, this.max_leap));
       return note_arr[this.prev_note];
     }
   }
 
-  play_note(note, duration='4n') {
+  play_note(note) {
     //play the note for the duration of an quarter note
-    this.synth.triggerAttackRelease(note, duration);
+    this.synth.triggerAttackRelease(note, this.duration);
   }
   
-  play_notes(note_arr, duration='4n', gap=1) {
+  play_notes(note_arr) {
     var time = 0.25
     for (let i = 0; i < note_arr.length; ++i) {
-      this.synth.triggerAttackRelease(note_arr[i], duration, "+"+time);
-      time += gap;
+      this.synth.triggerAttackRelease(note_arr[i], this.duration, "+"+time);
+      time += this.gap;
     }
   }
 
-  play_rand_note(duration='4n') {
-    var note = this.random_note(duration);
+  play_rand_note() {
+    var note = this.random_note(this.duration);
     this.play_note(note);
     return note;
   }
 
-  play_rand_seq(duration='4n', gap=1) {
+  play_rand_seq() {
     var note_arr = []
     var time = 0.25
     for (let i = 0; i < this.num_notes; ++i) {
       note_arr[i] = this.random_note();
-      // console.log(note_arr[i]);
-      this.synth.triggerAttackRelease(note_arr[i], duration, "+"+time);
-      time += gap;
+      this.synth.triggerAttackRelease(note_arr[i], this.duration, "+"+time);
+      time += this.gap;
     }
     return note_arr;
   }
