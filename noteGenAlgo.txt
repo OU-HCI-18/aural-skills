@@ -120,7 +120,7 @@ function allowed_notes(array, prev_note, max_leap) {
 // this code is basically in the constructor for the "class" we're constructing here
 // eg it's executed once
 
-function init_tone_gen(mode, num_notes, max_leap) {
+function init_tone_gen(mode, num_notes, max_leap, range) {
     switch (mode) {
     	case ("major"):
 		scale = new int[0,2,4,5,7,9,11,12,14,16,17,19,21,23,24];
@@ -140,6 +140,10 @@ function init_tone_gen(mode, num_notes, max_leap) {
 	break;
     }
 	prev_note = -1;
+	if (range == 1) {
+		i = scale.find_index_of_first_element_greater_than_equal_to(12)
+		scale = scale[0 : i]
+	}
 }
 
 function random_note() {

@@ -23,8 +23,8 @@ To run this locally:
 - [] create a settings page - Noah
 - [x] write the tone generation algorithm (psudeo-code) - Scottie
 - [x] implement the tone generation algorithm - Jack
-- [] extend tone generation algorithm to two octaves
-- [] implement extended algorithm
+- [x] extend tone generation algorithm to two octaves - Scottie
+- [x] implement extended algorithm - Jack
 
 Then, we can:
 
@@ -36,6 +36,7 @@ Planned Features (not implemented yet, low priority):
 
 - [] hover note labels
 - [] different instrument options in the settings
+- [] setting for one-octave mode to contain either 4th or 5th octave
 
 # Information from creating the website via the Create React App script
 
