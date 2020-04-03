@@ -47,6 +47,10 @@
   background-color: lemonchiffon;
 }
 
+.colorPurple {
+  background-color: plum;
+}
+
 .piano {
   /* FIXME: make width dynamic */
   position: relative;
