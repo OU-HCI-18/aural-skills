@@ -93,7 +93,7 @@ class ToneGen {
     // range check
     if (range === 1) {
       // find first element off the end (= C5 = 12)
-      var last = this.scale.find(e => e > 12); // find first element > 12
+      var last = this.scale.findIndex(e => e > 12); // find first element > 12
       this.scale = this.scale.slice(0, last);
     }
 
