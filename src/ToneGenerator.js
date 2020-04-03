@@ -40,7 +40,7 @@ It's stateful because it keeps track of the previous note played and the setting
 */
 class ToneGen {
   
-  int_note_arr = [];
+  scale = [];
   max_leap;
   num_notes;
   prev_note_index = -1;
@@ -49,6 +49,7 @@ class ToneGen {
   constructor (
     num_notes = 3, 
     max_leap = 4, 
+    range = 2,
     mode = "major", 
     synth = {
       "oscillator" : {
@@ -73,11 +74,29 @@ class ToneGen {
     // this.synth.volume.value = -4;
 
     switch (mode) {
-      case "major" : this.int_note_arr = [0,2,4,5,7,9,11,12]; // [C, C#, D, E, F, F#, A, B, C]
+      case ("major"):
+        this.scale = [0,2,4,5,7,9,11,12,14,16,17,19,21,23,24];
         break;
-      case "minor" : this.int_note_arr = [1,2,3,5,7,8,10,11,12];
+      case ("minor"):
+        this.scale = [0,2,3,5,7,8,10,11,12,14,15,17,19,20,22,23,24];
+        break;
+      case("blues"):
+        this.scale = [0,3,5,6,7,10,12,15,17,18,19,22,24];
+        break;
+      case("pentatonic"):
+        this.scale = [0,2,4,7,9,12,14,16,19,21,24];
+        break;
+      case("chromatic"):
+        this.scale = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
         break;
     }
+    // range check
+    if (range === 1) {
+      // find first element off the end (= C5 = 12)
+      var last = this.scale.find(e => e > 12); // find first element > 12
+      this.scale = this.scale.slice(0, last);
+    }
+
     this.max_leap = max_leap;
     this.num_notes = num_notes;
 
@@ -89,10 +108,10 @@ class ToneGen {
   random_note() {
     // sentinel: no previous note exists
     if (this.prev_note === -1) {
-      this.prev_note = this.int_note_arr[rand(this.int_note_arr.length)]
+      this.prev_note = this.scale[rand(this.scale.length)]
       return note_arr[this.prev_note];
     } else {
-      this.prev_note = rand_array(allowed_notes(this.int_note_arr, this.prev_note, this.max_leap))
+      this.prev_note = rand_array(allowed_notes(this.scale, this.prev_note, this.max_leap))
       return note_arr[this.prev_note];
     }
   }
