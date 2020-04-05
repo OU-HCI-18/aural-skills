@@ -51,6 +51,10 @@
   background-color: plum;
 }
 
+.colorBlue {
+  background-color: skyblue;
+}
+
 .piano {
   /* FIXME: make width dynamic */
   position: relative;
@@ -145,7 +149,7 @@
   width: 30px;
   height: 20px;
 
-  background: #fff;
+  background: white;
   color: #000;
   border-radius : 50%;
   z-index: 3;

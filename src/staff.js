@@ -21,6 +21,8 @@ function Note(props) {
 function Lines(props) {
     const canvas = useRef(null);
     
+    // this hook creates a warning about missing dependencies 
+    // I'm intentionally not including them, so this warning is wrong
     useEffect(() => {
         var ctx = canvas.current.getContext('2d');
         ctx.fillStyle = "#FFF";
@@ -42,22 +44,32 @@ function Lines(props) {
         <canvas className="lines" ref={canvas} width={props.width} height={props.height} />
     )
 }
-
+const major = ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'];
 function Staff(props) {
-    const [scale, setScale] = useState(
-        // major scale
-        ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6']
-    );
-    const [note, setNote] = useState('.');
     // TODO: handle mode
-    // TODO: handle range
+    
     // right now, we'll just do the major scale
+    // immutable
+    const [scale, setScale] = useState(major);
+    // mutable
+    const [notes, setNotes] = useState(scale);
+    const [note, setNote] = useState('.');
+    // TODO: handle range
+    useEffect(() => {
+        if (props.range === 1) {
+            setNotes(scale.slice(0, Math.ceil(scale.length / 2)))
+        }
+        else {
+            setNotes(scale)
+        }
+    }, [scale, props.range])
+    
     
     return (
     <div>
         <div className="staff" height={200}>
             <Lines width={700} height={200} gap={30} fill={1}/>
-            {scale.map((name, index) => (
+            {notes.map((name, index) => (
                 <Note 
                     key={name} 
                     name={name} 

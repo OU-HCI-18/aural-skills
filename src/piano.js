@@ -22,6 +22,9 @@ function BlackNote(props) {
 }
 
 function Piano(props) {
+  if (props.range === 1) {
+    return (<PianoPhone props/>);
+  }
   return (
   <div className="piano">
     <WhiteNote name={'C4'} onNoteClick={props.onNoteClick} />

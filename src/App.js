@@ -56,6 +56,8 @@ class App extends React.Component {
 
     this.onStart = this.onStart.bind(this);
     this.swapUI = this.swapUI.bind(this);
+    this.swapRange = this.swapRange.bind(this);
+
   }
 
   onStart() {
@@ -65,25 +67,30 @@ class App extends React.Component {
   }
 
   swapUI() {
+    if (this.state.ui === "piano") {
+      this.setState({ui : "staff"})
+    }
+    else (
+      this.setState({ui : "piano"})
+    )
+  }
+  swapRange() {
     if (this.state.range === 1) {
       this.setState({range : 2});
     }
     else if (this.state.range === 2) {
       this.setState({range : 1});
     }
+    // console.log("range", this.setState.range);
     toneGen = new ToneGen(this.state)
   }
 
   render() {
     console.log("this.state.gap", this.state.gap);
     var ui;
+    // TODO: slap this bad boy into a wrapper UI function
     if (this.state.ui === "piano") {
-      if (this.state.range === 1) {
-        ui = PianoPhone;
-      }
-      else {
-        ui = Piano;
-      }
+      ui = Piano;
     }
     else if (this.state.ui === "staff") {
       ui = Staff;
@@ -118,6 +125,7 @@ class App extends React.Component {
           <Route path='/'> 
             <PlayView 
               swapUI={this.swapUI}
+              swapRange={this.swapRange}
               onStart={this.onStart} 
               ui={ui}
               duration = {this.state.duration}
@@ -142,6 +150,8 @@ function PlayView (props) {
   return (
   <div>
     <button className="App-button colorPurple" onClick={(e) => props.swapUI()}>UI</button>
+    <button className="App-button colorBlue" onClick={(e) => props.swapRange()}>Range</button>
+
     <p>
       <Link to='/train'>
         <button className="App-button colorGreen" onClick={props.onStart}>Start</button>
@@ -157,6 +167,7 @@ function PlayView (props) {
       <p>Play a Note:</p>
       <props.ui 
         mode = {props.mode}
+        range = {props.range}
         onNoteClick = {(note) => {
           console.log(note);
           // need to do it this way so that the AudioContext is created by the user
@@ -223,6 +234,7 @@ function TrainView (props) {
           </div>
           <props.ui
             mode = {props.mode}
+            range = {props.range}
             onNoteClick = {(note) => {
               if (!trainData.guessed) {
                 setGuess(note);
