@@ -4,8 +4,9 @@ import './App.css';
 function WhiteNote(props) {
   return (
     <div 
-        className="key" 
-        onClick={(e) => props.onNoteClick(props.name)}>
+      className="key" 
+      onClick={(e) => props.onNoteClick(props.name)}
+    >
       {/* {props.name} */}
     </div>
   );

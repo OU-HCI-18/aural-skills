@@ -3,10 +3,13 @@ import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import TrainData from './train.js';
-import {Piano , PianoPhone} from './piano.js';
 import Results from './results.js';
 import Settings from './settings.js';
+
 import ToneGen from './ToneGenerator';
+
+import {Piano , PianoPhone} from './piano.js';
+import Staff from './staff.js';
 
 var trainData = new TrainData();
 var toneGen = null;
@@ -18,7 +21,7 @@ class App extends React.Component {
 
     this.state = {
       // all settings for the app are stored here
-      ui : "piano",   // ui to use
+      ui : "staff",   // ui to use
       
       replay : true,  // allow the user to replay notes
       
@@ -81,6 +84,9 @@ class App extends React.Component {
       else {
         ui = Piano;
       }
+    }
+    else if (this.state.ui === "staff") {
+      ui = Staff;
     }
     return(
     <header className="App App-header">
@@ -150,6 +156,7 @@ function PlayView (props) {
     <div>
       <p>Play a Note:</p>
       <props.ui 
+        mode = {props.mode}
         onNoteClick = {(note) => {
           console.log(note);
           // need to do it this way so that the AudioContext is created by the user
@@ -215,6 +222,7 @@ function TrainView (props) {
             </button>
           </div>
           <props.ui
+            mode = {props.mode}
             onNoteClick = {(note) => {
               if (!trainData.guessed) {
                 setGuess(note);
