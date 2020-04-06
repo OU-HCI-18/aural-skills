@@ -23,7 +23,7 @@ function BlackNote(props) {
 
 function Piano(props) {
   if (props.range === 1) {
-    return (<PianoPhone props/>);
+    return (<PianoPhone onNoteClick={props.onNoteClick}/>);
   }
   return (
   <div className="piano">

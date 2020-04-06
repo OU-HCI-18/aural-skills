@@ -8,7 +8,7 @@ import Settings from './settings.js';
 
 import ToneGen from './ToneGenerator';
 
-import {Piano , PianoPhone} from './piano.js';
+import Piano from './piano.js';
 import Staff from './staff.js';
 
 var trainData = new TrainData();
