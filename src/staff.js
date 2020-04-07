@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import treble from './treble.png';
 
 
 function Note(props) {
@@ -46,13 +47,17 @@ function Lines(props) {
     }, []); // only do this once
 
     return (
+        <div>
         <canvas className="lines" ref={canvas} width={props.width} height={props.height} />
+        <img src={treble} alt={"A treble clef"} style={{position:'absolute',top:50,left:20,width:70,height:210,z_index:4}}/>
+        </div>
     )
 }
+
 const major = ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'];
-const minor = ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','B5',/*'Bb5'*/,'C6'];
-const blues = [];
-const pentatonic = [];
+const minor = ['C4','D4','Eb4','F4','G4','Ab4',/*'Bb4',*/'B4','C5','D5','Eb5','F5','G5','Ab5','B5',/*'Bb5',*/'C6'];
+const blues = ['C4','Eb4','F4',/*'F#4',*/'G4','Bb4','C5','Eb5','F5',/*'F#55',*/'G5','Bb5','C6'];
+const pentatonic = ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'];
 
 function Staff(props) {
     // TODO: handle mode better
@@ -71,6 +76,7 @@ function Staff(props) {
         }
     });
     // mutable
+    // <img src="treble.png" alt = "" style = {{positioning: 'relative', top: '500', left: '500', z_index:'4'}}/> 
     const [notes, setNotes] = useState(scale);
     const [note, setNote] = useState('.');
     // TODO: handle range
@@ -102,7 +108,7 @@ function Staff(props) {
             {/* canvas == lines */}
         </div>
         {note}
-    </div>
+        </div>
     );
 }
 export default Staff;
