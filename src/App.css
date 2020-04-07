@@ -149,18 +149,34 @@
   width: 30px;
   height: 20px;
 
-  background: white;
+  /* background: white; */
   color: #000;
   border-radius : 50%;
   z-index: 3;
 }
 
-.note:hover:after
-{
-  background: gray;
-}
 
 .note.pressed:after,
 .note:active:after {
   background: black;
+}
+
+.noteText {
+  width: 0px;
+  height: 0px;
+  color: black;
+}
+.noteText:after {
+  color: black;
+  content: inherit;
+  position: absolute;
+  float: left;
+  top: inherit;
+  left: inherit; 
+  bottom: inherit;
+
+  width: 30px;
+  height: 20px;
+
+  z-index: 4;
 }
