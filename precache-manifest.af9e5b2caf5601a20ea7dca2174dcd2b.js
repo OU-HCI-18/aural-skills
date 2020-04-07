@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5af43bfd6e2a46436e7630b01a81dff1",
+    "revision": "15e44bd12550d8fef1092a1f53b83f2d",
     "url": "/aural-skills/index.html"
   },
   {
-    "revision": "81cd51808d5588adab2b",
+    "revision": "f888f5636ea798922f0f",
     "url": "/aural-skills/static/css/main.705140d8.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/aural-skills/static/js/2.cbc78b81.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "81cd51808d5588adab2b",
-    "url": "/aural-skills/static/js/main.deba05e9.chunk.js"
+    "revision": "f888f5636ea798922f0f",
+    "url": "/aural-skills/static/js/main.e54c8e7e.chunk.js"
   },
   {
     "revision": "451ecfdce5f30090187c",

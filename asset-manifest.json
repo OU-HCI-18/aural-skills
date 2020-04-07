@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/aural-skills/static/css/main.705140d8.chunk.css",
-    "main.js": "/aural-skills/static/js/main.deba05e9.chunk.js",
-    "main.js.map": "/aural-skills/static/js/main.deba05e9.chunk.js.map",
+    "main.js": "/aural-skills/static/js/main.e54c8e7e.chunk.js",
+    "main.js.map": "/aural-skills/static/js/main.e54c8e7e.chunk.js.map",
     "runtime-main.js": "/aural-skills/static/js/runtime-main.af778e17.js",
     "runtime-main.js.map": "/aural-skills/static/js/runtime-main.af778e17.js.map",
     "static/js/2.cbc78b81.chunk.js": "/aural-skills/static/js/2.cbc78b81.chunk.js",
     "static/js/2.cbc78b81.chunk.js.map": "/aural-skills/static/js/2.cbc78b81.chunk.js.map",
     "index.html": "/aural-skills/index.html",
-    "precache-manifest.75c34e9ed88c0ea6edaccb45dd05d4ce.js": "/aural-skills/precache-manifest.75c34e9ed88c0ea6edaccb45dd05d4ce.js",
+    "precache-manifest.af9e5b2caf5601a20ea7dca2174dcd2b.js": "/aural-skills/precache-manifest.af9e5b2caf5601a20ea7dca2174dcd2b.js",
     "service-worker.js": "/aural-skills/service-worker.js",
     "static/css/main.705140d8.chunk.css.map": "/aural-skills/static/css/main.705140d8.chunk.css.map",
     "static/js/2.cbc78b81.chunk.js.LICENSE.txt": "/aural-skills/static/js/2.cbc78b81.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.af778e17.js",
     "static/js/2.cbc78b81.chunk.js",
     "static/css/main.705140d8.chunk.css",
-    "static/js/main.deba05e9.chunk.js"
+    "static/js/main.e54c8e7e.chunk.js"
   ]
 }
