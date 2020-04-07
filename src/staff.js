@@ -89,7 +89,7 @@ function Lines(props) {
             // add the label (if needed)
             if (props.sfn[i]) {
                 ctx.fillStyle = '#000';
-                ctx.fillText(props.sfn[i], x-3, y+5);
+                ctx.fillText(props.sfn[i], x-5, y+6);
                 ctx.fillStyle = '#FFF';
             }
 
@@ -110,7 +110,7 @@ function Lines(props) {
         ctx.font = "35px Georgia";
         y = false;
         var prev = false;
-
+        start = props.height - props.gap/2
         for (var j in props.scale) {
             i = note_map[props.scale[j]]; // index from the note map
             if (i > 8) {break}; // only draw values in one octave
@@ -119,14 +119,14 @@ function Lines(props) {
             if (props.scale[j][1] === '#') {
                 // draw a #
                 y = (y) ? 10 : 9
-                ctx.fillText('\u266F', 80 + x, props.height + y - i*15);
+                ctx.fillText('\u266F', 80 + x, start + y - i*(props.gap/2));
                 prev = !prev;
                 continue;
             }
             else if (props.scale[j][1] === 'b') {
                 // draw a b
-                y = (y) ? 10 : 5
-                ctx.fillText('\u266D', 80 + x, props.height + y - i*15);
+                y = (y) ? 10 : 7
+                ctx.fillText('\u266D', 80 + x, start + y - i*(props.gap/2));
                 prev = !prev;
                 continue;
             }
@@ -147,9 +147,9 @@ function Lines(props) {
 const major = ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'];
 const major_sfn = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 const minor = ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','Bb5','B5','C6'];
-const minor_sfn = [0,  0,    0,   0,   0, 0,'\u266F','\u266E',0,  0,    0,   0,   0,0,'\u266F','\u266E',0];
+const minor_sfn = [0,  0,    0,   0,   0, 0,'\u266D','\u266E',0,  0,    0,   0,   0,0,'\u266D','\u266E',0];
 const blues = ['C4','Eb4','F4','F#4','G4','Bb4','C5','Eb5','F5','F#5','G5','Bb5','C6'];
-const blues_sfn = [0,0,'\u266E','\u266D',0,   0,   0,0,'\u266E','\u266D',0,    0,   0];
+const blues_sfn = [0,0,'\u266E','\u266F',0,   0,   0,0,'\u266E','\u266F',0,    0,   0];
 const pentatonic = ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'];
 const pentatonic_sfn = [0,0,0,0,0,0,0,0,0,0]
 
