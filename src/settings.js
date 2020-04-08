@@ -35,14 +35,14 @@ function Settings() {
          <tbody>
           <tr>
             <th>
-            <input className = "Input-Spinner" type="number" min="1" max="10" step="1" value = {max_leap.state.value}/>
+            <input className = "Input-Spinner" type="number" min="1" max="10" step="1"/>
             </th>
 
              <th>
             <select >
               <option value="Minor Second">Minor Second</option>
               <option value="Major Second">Major Second</option>
-              <option value="Minor Third">Minor Third</option>
+              <option selected value="Minor Third">Minor Third</option>
               <option value="Perfect Fourth">Perfect Fourth</option>
               <option value="Tritone">Tritone</option>
               <option value="Perfect Fifth">Perfect Fifth</option>
@@ -56,7 +56,7 @@ function Settings() {
 
              <th>
             <select >
-             <option value="Major">Major</option>
+             <option selected value="Major">Major</option>
              <option value="Minor">Minor</option>
              <option value="Blues">Blues</option>
              <option value="Pentatonic">Pentatonic</option>
