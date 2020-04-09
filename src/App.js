@@ -57,7 +57,7 @@ class App extends React.Component {
     this.onStart = this.onStart.bind(this);
     this.swapUI = this.swapUI.bind(this);
     this.swapRange = this.swapRange.bind(this);
-
+    this.setSettings = this.setSettings.bind(this);
   }
 
   onStart() {
@@ -85,8 +85,17 @@ class App extends React.Component {
     toneGen = new ToneGen(this.state)
   }
 
+  setSettings(setting, value) {
+    if (setting === "num_notes") {
+      this.setState({num_notes : value});
+    } else if (setting === "max_leap") {
+      this.setState({max_leap : value});
+    } else if (setting === "mode") {
+      this.setState({mode : value});
+    }
+  }
+
   render() {
-    console.log("this.state.gap", this.state.gap);
     var ui;
     // TODO: slap this bad boy into a wrapper UI function
     if (this.state.ui === "piano") {
@@ -101,7 +110,9 @@ class App extends React.Component {
       <BrowserRouter>
         <Switch>
           <Route path='/settings'>
-            <Settings />
+            <Settings 
+              setSettings={this.setSettings}
+            />
           </Route>
           <Route path='/results'>
             <ResultsView 
