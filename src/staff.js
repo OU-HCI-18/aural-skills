@@ -4,9 +4,26 @@ import treble from './treble.png';
 
 const note_map = {
     'C4':0,'C#4':0,'D4':1,'Eb4':2,'E4':2,'F4':3, 'F#4':3, 'G4':4, 'Ab4':5, 'A4':5, 'Bb4':6, 'B4':6,
-    'C5':7,'C#5':7,'D5':8,'Eb5':9,'E5':9,'F5':10,'F#5':10,'G5':11,'Ab5':12,'A5':12,'Bb5':13,'B5':12,
+    'C5':7,'C#5':7,'D5':8,'Eb5':9,'E5':9,'F5':10,'F#5':10,'G5':11,'Ab5':12,'A5':12,'Bb5':13,'B5':13,
     'C6':14
 };
+
+const major = ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'];
+const major_sfn = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+const minor = ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','Bb5','B5','C6'];
+const minor_sfn = [0,  0,    0,   0,   0, 0,'\u266D','\u266E',0,  0,    0,   0,   0,0,'\u266D','\u266E',0];
+
+const blues = ['C4','Eb4','F4','F#4','G4','Bb4','C5','Eb5','F5','F#5','G5','Bb5','C6'];
+const blues_sfn = [0,0,'\u266E','\u266F',0,   0,   0,0,'\u266E','\u266F',0,    0,   0];
+
+const pentatonic = ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'];
+const pentatonic_sfn = [0,0,0,0,0,0,0,0,0,0]
+
+const chromatic = ['C4','C#4','D4','Eb4','E4','F4','F#4','G4','Ab4','A4','Bb4','B4',
+'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5','C6']
+const chromatic_sfn = ['\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',
+'\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',0]
 
 function Note(props) {
     return (
@@ -73,7 +90,7 @@ function Lines(props) {
         ctx.fillRect(115, props.height - props.gap/2, 50, props.fill);
 
         var y_ind = 0, x, y, nx = 15, ny=10;
-        
+        // draw the notes
         for (i in props.notes) {
             y_ind = note_map[props.notes[i]]
 
@@ -100,7 +117,6 @@ function Lines(props) {
                 // need to recompute in case y_ind changed
                 x = 140 + (2*nx+5)*adjusted_index - 2*nx + 6; 
                 y = props.height - (props.gap/2)*(y_ind+1)
-                console.log(y_ind, x, y);
                 // draw the bar
                 ctx.fillRect(x, y, 50, props.fill);
             }
@@ -130,7 +146,6 @@ function Lines(props) {
                 prev = !prev;
                 continue;
             }
-            console.log('-', props.scale[j]);
             // natural = U+266E
         }
 
@@ -144,63 +159,58 @@ function Lines(props) {
     )
 }
 
-const major = ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'];
-const major_sfn = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-const minor = ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','Bb5','B5','C6'];
-const minor_sfn = [0,  0,    0,   0,   0, 0,'\u266D','\u266E',0,  0,    0,   0,   0,0,'\u266D','\u266E',0];
-const blues = ['C4','Eb4','F4','F#4','G4','Bb4','C5','Eb5','F5','F#5','G5','Bb5','C6'];
-const blues_sfn = [0,0,'\u266E','\u266F',0,   0,   0,0,'\u266E','\u266F',0,    0,   0];
-const pentatonic = ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'];
-const pentatonic_sfn = [0,0,0,0,0,0,0,0,0,0]
-
 function Staff(props) {
     // immutable
     const [scale] = useState(() => {
         switch(props.mode) {
+            default :
+            case "major" :
+                return major;
             case "minor" : 
                 return minor;
             case "blues" : 
                 return blues;
-            case "penatonic" : 
+            case "pentatonic" : 
                 return pentatonic;
-            case "major" :
-            default :
-                return major;
+            case "chromatic" :
+                return chromatic;
         }
     });
     const [sfn] = useState(() => {
         switch(props.mode) {
+            default :
+            case "major" :
+                return major_sfn;
             case "minor" : 
                 return minor_sfn;
             case "blues" : 
                 return blues_sfn;
-            case "penatonic" : 
+            case "pentatonic" : 
                 return pentatonic_sfn;
-            case "major" :
-            default :
-                return major_sfn;
+            case "chromatic" :
+                return chromatic_sfn;
         }
     })
-    const [notes, setNotes] = useState(scale);
+    const [notes] = useState((props.range === 1) 
+            ? scale.slice(0, Math.ceil(scale.length / 2))
+            : scale
+    );
     const [note, setNote] = useState('.');
 
-    useEffect(() => {
-        if (props.range === 1) {
-            setNotes(scale.slice(0, Math.ceil(scale.length / 2)))
-        }
-        else {
-            setNotes(scale)
-        }
-    }, [scale, props.range])
-    
-    // TODO: add support for both naturals and flats
-    // easiest to do this by adding a natural on the line, eg
-    // b ------------------(nat)--(flat)-------
-    // need to adjust the map function - add a check for same index
     return (
     <div>
         <div className="staff" height={200}>
-            <Lines width={700} height={235} gap={30} fill={1} scale={scale} notes={notes} sfn={sfn}/>
+            <Lines height={235} gap={30} fill={1} scale={scale} notes={notes} sfn={sfn}
+                width={
+                (props.range === 2) ? (
+                    (props.mode === "chromatic") ? 1100
+                    : (props.mode === "minor") ? 730 
+                        : (props.mode === "major") ? 700 : 600)
+                : ((props.mode === "chromatic") ? 70
+                    : (props.mode === "minor") ? 630 
+                        : (props.mode === "major") ? 600 : 500)
+                }
+            />
             <Notes sfn={sfn} notes={notes} onNoteClick={props.onNoteClick} setNote={setNote}/>
             {/* canvas == lines */}
         </div>
