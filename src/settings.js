@@ -31,6 +31,8 @@ function Settings(props) {
         <th className='Settings-table-cell'>Number of Notes</th>
         <th className='Settings-table-cell'>Max Leap</th>
         <th className='Settings-table-cell'>Mode</th>
+        <th className='Settings-table-cell'>Octaves</th>
+        <th className='Settings-table-cell'>Interface</th> 
       </tr>
     </thead>
     <tbody>
@@ -76,6 +78,24 @@ function Settings(props) {
         <option value="pentatonic">Pentatonic</option>
         <option value="chromatic">Chromatic</option>
       </select>
+      </th>
+
+      <th>
+        <input type = "radio" id = "one" name = "octaves" value = {1} 
+        onChange={(e) => props.setSettings("range", e.target.value)}></input>
+      <label for= "one">One</label><br></br>
+      <input type = "radio" id = "two" name = "octaves" value = {2} checked></input>
+      <label for= "two">Two</label>
+       </th>
+
+      <th>
+      <select 
+        defaultValue="staff"
+        onChange={(e) => props.setSettings("staff", e.target.value)}>
+        <option value="staff">Staff</option>
+        <option value="piano">Piano</option>
+
+        </select>
       </th>
       </tr>        
     </tbody>
