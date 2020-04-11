@@ -1,0 +1,33 @@
+****************************************************************
+GIT CHEATSHEET
+Start
+    git init                    // Creates an empty repository
+    git clone <url>             // Clones the given repository
+Daily Use
+    git add <filename(s)>	// add filename(s) to the staging area
+				// each filename can be a regular expression
+    git add *			// add all files to the staging area
+    git commit <f> -m "message" // create a commit with the given message
+				// <f> file to add to the staging area 
+				// before committing - optional
+    git diff <filename>		// see the difference between the current file 
+				// and the last committed version of it
+Branch
+    git branch <branchname>     // creates a branch w/ the given name
+    git checkout <branchname>   // switches to the given branch
+    git merge <branchname>      // merges the given w/ current branch
+	See: Notes on branching
+Pull/Push
+    git remote add origin <url> // imports the given repo (after init)
+    git pull origin master      // pulls from master branch of repo
+    git push origin master      // pushes to master branch of repo
+	Note: not necessary to supply `origin master` for push / pull
+Help
+    git status                  // shows the state of the (local) repository
+	git help <command>		// view the docs
+****************************************************************
+
+Notes on branching:
+- All branches happen locally, and still need to be pushed to the remote. For creating new branches, this is automatic. 
+- For merging branches, it's usually best to merge the 'more important' branch (eg master) into the current branch (eg: 'git checkout feature' 'git merge master' - make sure that master is up to date first with 'git pull'), then fix any merge issues locally. After that, commit the merge on the feature branch and push to the remote, and create a pull request in github to merge the branch into master. This helps to (1) make sure all pull requests don't have merge conflicts, (2) let other people see that your work is done (they can validate the merge) before merging into master, and (3) be able to test the merge before you actually mess with master.
+
