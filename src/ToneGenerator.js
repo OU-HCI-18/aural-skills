@@ -1,15 +1,14 @@
 import Tone from 'tone';
                 // 0    1       2     3     4     5     6       7     8     9     10      11  
 const note_arr = ['C4', 'C#4', 'D4', 'Eb4', 'E4', 'F4', 'F#4', 'G4', 'Ab4', 'A4', 'Bb4', 'B4',
-                // 12   13      14    15    16    17    18     19    20     21    22      22
+                // 12   13      14    15    16    17    18     19    20     21    22      23
                   'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5',
-                // 23
+                // 24
                   'C6'];
 
 function rand(num) {
   return Math.floor(Math.random() * num);
 }
-
 // scan through the array the get the notes that are allowed (in the interval)
 function allowed_notes(array, prev_val, max_leap) {
   var i = 0;

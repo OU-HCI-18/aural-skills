@@ -3,10 +3,13 @@ import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import TrainData from './train.js';
-import {Piano , PianoPhone} from './piano.js';
 import Results from './results.js';
 import Settings from './settings.js';
+
 import ToneGen from './ToneGenerator';
+
+import Piano from './piano.js';
+import Staff from './staff.js';
 
 var trainData = new TrainData();
 var toneGen = null;
@@ -18,12 +21,12 @@ class App extends React.Component {
 
     this.state = {
       // all settings for the app are stored here
-      ui : "piano",   // ui to use
+      ui : "staff",   // ui to use
       
       replay : true,  // allow the user to replay notes
       
       max_leap : 3,   // maximum interval of toneGen
-      mode : "major", // mode of toneGen
+      mode : "blues", // mode of toneGen
       num_notes: 3,   // number of notes to play at a time
       range: 2,       // range of toneGen
       gap : 1,        // seconds gap between notest
@@ -53,6 +56,8 @@ class App extends React.Component {
 
     this.onStart = this.onStart.bind(this);
     this.swapUI = this.swapUI.bind(this);
+    this.swapRange = this.swapRange.bind(this);
+
   }
 
   onStart() {
@@ -62,25 +67,33 @@ class App extends React.Component {
   }
 
   swapUI() {
+    if (this.state.ui === "piano") {
+      this.setState({ui : "staff"})
+    }
+    else (
+      this.setState({ui : "piano"})
+    )
+  }
+  swapRange() {
     if (this.state.range === 1) {
       this.setState({range : 2});
     }
     else if (this.state.range === 2) {
       this.setState({range : 1});
     }
+    // console.log("range", this.setState.range);
     toneGen = new ToneGen(this.state)
   }
 
   render() {
     console.log("this.state.gap", this.state.gap);
     var ui;
+    // TODO: slap this bad boy into a wrapper UI function
     if (this.state.ui === "piano") {
-      if (this.state.range === 1) {
-        ui = PianoPhone;
-      }
-      else {
-        ui = Piano;
-      }
+      ui = Piano;
+    }
+    else if (this.state.ui === "staff") {
+      ui = Staff;
     }
     return(
     <header className="App App-header">
@@ -112,6 +125,7 @@ class App extends React.Component {
           <Route path='/'> 
             <PlayView 
               swapUI={this.swapUI}
+              swapRange={this.swapRange}
               onStart={this.onStart} 
               ui={ui}
               duration = {this.state.duration}
@@ -136,6 +150,8 @@ function PlayView (props) {
   return (
   <div>
     <button className="App-button colorPurple" onClick={(e) => props.swapUI()}>UI</button>
+    <button className="App-button colorBlue" onClick={(e) => props.swapRange()}>Range</button>
+
     <p>
       <Link to='/train'>
         <button className="App-button colorGreen" onClick={props.onStart}>Start</button>
@@ -150,6 +166,8 @@ function PlayView (props) {
     <div>
       <p>Play a Note:</p>
       <props.ui 
+        mode = {props.mode}
+        range = {props.range}
         onNoteClick = {(note) => {
           console.log(note);
           // need to do it this way so that the AudioContext is created by the user
@@ -215,6 +233,8 @@ function TrainView (props) {
             </button>
           </div>
           <props.ui
+            mode = {props.mode}
+            range = {props.range}
             onNoteClick = {(note) => {
               if (!trainData.guessed) {
                 setGuess(note);

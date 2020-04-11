@@ -4,8 +4,9 @@ import './App.css';
 function WhiteNote(props) {
   return (
     <div 
-        className="key" 
-        onClick={(e) => props.onNoteClick(props.name)}>
+      className="key" 
+      onClick={(e) => props.onNoteClick(props.name)}
+    >
       {/* {props.name} */}
     </div>
   );
@@ -21,6 +22,9 @@ function BlackNote(props) {
 }
 
 function Piano(props) {
+  if (props.range === 1) {
+    return (<PianoPhone onNoteClick={props.onNoteClick}/>);
+  }
   return (
   <div className="piano">
     <WhiteNote name={'C4'} onNoteClick={props.onNoteClick} />

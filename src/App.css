@@ -51,6 +51,10 @@
   background-color: plum;
 }
 
+.colorBlue {
+  background-color: skyblue;
+}
+
 .piano {
   /* FIXME: make width dynamic */
   position: relative;
@@ -111,3 +115,68 @@
   background-color: #555;
 }
 
+.staff {
+  position: relative;
+  text-align: center;
+  padding: 10px;
+  overflow: hidden;
+  margin: auto;
+  padding: 20px;
+  z-index: 1;
+}
+
+.lines {
+  position: relative;
+  bottom: 0;
+  z-index: 2;
+}
+
+.note {
+  /* position: relative; */
+  width: 0px;
+  height: 0px;
+}
+.note:after {
+  content: "";
+  /* position: relative; */
+  position: absolute;
+  float: left;
+  top: inherit;
+  left: inherit;
+  bottom: inherit;
+  /* top: 0px; */
+  /* left: 200px; */
+  width: 30px;
+  height: 20px;
+
+  /* background: white; */
+  color: #000;
+  border-radius : 50%;
+  z-index: 3;
+}
+
+
+.note.pressed:after,
+.note:active:after {
+  background: black;
+}
+
+.noteText {
+  width: 0px;
+  height: 0px;
+  color: black;
+}
+.noteText:after {
+  color: black;
+  content: inherit;
+  position: absolute;
+  float: left;
+  top: inherit;
+  left: inherit; 
+  bottom: inherit;
+
+  width: 30px;
+  height: 20px;
+
+  z-index: 4;
+}
