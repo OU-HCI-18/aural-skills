@@ -27,12 +27,43 @@
   white-space: nowrap;
 }
 
+.App-buttonXL {
+  height: 8vmin;
+  width: 10vw;
+  min-width: 120px;
+  justify-content: center;
+  font-size: calc(14px + 1vmin);
+  border: black;
+  white-space: nowrap;
+}
+
 .Results-table {
   text-align: center;
 }
 
 .Results-table-cell {
   padding: 10px;
+}
+
+.Settings-table {
+  text-align: left;
+}
+
+.Settings-table-cell {
+  padding: 10px 20px 10px 20px;
+  text-align: left;
+}
+
+label {
+  font-size: 12px;
+  font-weight:700
+}
+
+.Input-Spinner {
+  height: 20px;
+  width: 40px;
+  border: black;
+  white-space: nowrap;
 }
 
 .colorGreen {
