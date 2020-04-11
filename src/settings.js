@@ -53,7 +53,6 @@ function Mode(props) {
 }
 
 function NumOctaves(props) {
-  // TODO: fix this, maybe a group?
   return (
     <p>
     <input type = "radio" id = "one" name = "octaves" value = {1} 
