@@ -6,7 +6,6 @@ class TrainData {
   guess_stack = [];
   result_stack = [];
   start = false;
-  guessed = true;
 
   constructor() {
     this.addGuess  = this.addGuess.bind(this);
@@ -15,18 +14,35 @@ class TrainData {
   }
 
   addNote(note) {
-    if (!this.guessed) {
+    while (this.guess_stack.length !== this.note_stack.length) {
       this.guess_stack.unshift('-');
     }
     this.note_stack.unshift(note);
-    this.guessed = false;
+  }
+
+  addNoteArr(note_arr) {
+    while (this.guess_stack.length !== this.note_stack.length) {
+      this.guess_stack.unshift('-');
+    }
+    for (var i in note_arr) {
+      // console.log("note: " + note_arr[i]);
+      this.note_stack.unshift(note_arr[i]);
+    }
   }
 
   addGuess(note) {
-    if (!this.guessed) {
-      this.guessed = true;
+    if (this.guess_stack.length !== this.note_stack.length) {
+      // console.log("guess:" + note + " : " + this.note_stack.length - this.guess_stack.length)
+      console.log(this.note_stack)
       this.guess_stack.unshift(note)
-      this.result_stack.unshift(note === this.note_stack[0]);
+      this.result_stack.unshift(
+        // note the weird index- this is because we're working with a stack, and we may have
+        // added PAST the note we're comparing to, so we need to look at an index in the note stack
+        note === this.note_stack[this.note_stack.length - this.guess_stack.length]
+      );
+    }
+    else {
+      console.log("wrong length");
     }
     return (this.result_stack[0]);
   }

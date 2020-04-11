@@ -2,7 +2,7 @@
   "name": "eartrain",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ou-hci-18.github.io/website/",
+  "homepage": "https://ou-hci-18.github.io/aural-skills/",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
@@ -17,7 +17,38 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      ui : "computer"
+      // all settings for the app are stored here
+      ui : "piano",   // ui to use
+      
+      replay : true,  // allow the user to replay notes
+      
+      max_leap : 3,   // maximum interval of toneGen
+      mode : "major", // mode of toneGen
+      num_notes: 3,   // number of notes to play at a time
+      range: 2,       // range of toneGen
+      gap : 1,        // seconds gap between notest
+      duration: '4n', // note duration
+      // synth to use
+      // this is a nested object. That's usually bad
+      // this means it will be hard to update 
+      // (eg setState({synth : synth_obj}) will set this object,
+      // NOT merge with it
+      synth : {
+        "oscillator" : {
+          "type" : "triangle"
+        },
+        "envelope" : {
+          "attackCurve" : "exponential",
+          "attack" : 0.02,
+          "decayCurve" : "exponential",
+          "decay" : 0.03,
+          "sustain" : 0.4,
+          "releaseCurve" : "exponential",
+          "release" : 0.5,
+        },
+        "portamento" : 0.0,
+        "volume" : -15
+      }
     }
 
     this.onStart = this.onStart.bind(this);
@@ -27,44 +58,70 @@ class App extends React.Component {
   onStart() {
     console.log("resetting train data");
     trainData = new TrainData();
-    toneGen = new ToneGen();
+    toneGen = new ToneGen(this.state);
   }
 
   swapUI() {
-    if (this.state.ui === "computer") {
-      console.log("changing to phone");
-      this.setState({ui : "phone"});
+    if (this.state.range === 1) {
+      this.setState({range : 2});
     }
-    else {
-      this.setState({ui : "computer"});
+    else if (this.state.range === 2) {
+      this.setState({range : 1});
     }
+    toneGen = new ToneGen(this.state)
   }
 
   render() {
+    console.log("this.state.gap", this.state.gap);
     var ui;
-    if (this.state.ui === "computer") {
-      ui = Piano;
-    }
-    else {
-      ui = PianoPhone;
+    if (this.state.ui === "piano") {
+      if (this.state.range === 1) {
+        ui = PianoPhone;
+      }
+      else {
+        ui = Piano;
+      }
     }
     return(
     <header className="App App-header">
       <h1>Aural Training</h1> 
-      <button onClick={(e) => this.swapUI()}>UI</button>
       <BrowserRouter>
         <Switch>
           <Route path='/settings'>
             <Settings />
           </Route>
           <Route path='/results'>
-            <ResultsView trainData={trainData}/>
+            <ResultsView 
+              trainData={trainData}
+            />
           </Route>
           <Route path='/train'> 
-            <TrainView trainData={trainData} replay={true} ui={ui}/> 
+            <TrainView 
+              trainData = {trainData} 
+              replay = {this.state.replay} 
+              ui = {ui}
+              duration = {this.state.duration}
+              max_leap = {this.state.max_leap}
+              mode = {this.state.mode}
+              num_notes = {this.state.num_notes}
+              range = {this.state.range}
+              gap = {this.state.gap}
+              synth = {this.state.synth}
+            /> 
           </Route>
           <Route path='/'> 
-            <PlayView onStart={this.onStart} ui={ui}/>
+            <PlayView 
+              swapUI={this.swapUI}
+              onStart={this.onStart} 
+              ui={ui}
+              duration = {this.state.duration}
+              max_leap = {this.state.max_leap}
+              mode = {this.state.mode}
+              num_notes = {this.state.num_notes}
+              range = {this.state.range}
+              gap = {this.state.gap}
+              synth = {this.state.synth}
+            />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -78,6 +135,7 @@ function PlayView (props) {
   
   return (
   <div>
+    <button className="App-button colorPurple" onClick={(e) => props.swapUI()}>UI</button>
     <p>
       <Link to='/train'>
         <button className="App-button colorGreen" onClick={props.onStart}>Start</button>
@@ -97,9 +155,9 @@ function PlayView (props) {
           // need to do it this way so that the AudioContext is created by the user
           // for Chrome
           if (toneGen === null) {
-            toneGen = new ToneGen()
+            toneGen = new ToneGen(props)
           }
-          toneGen.play_note_button(note); 
+          toneGen.play_note(note); 
           setNote(note)}
         }
       />
@@ -111,6 +169,7 @@ function PlayView (props) {
 }
 
 function TrainView (props) {
+  const [notes, setNotes] = useState('');
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState(null);
   // const toneGen = new ToneGen();
@@ -133,7 +192,8 @@ function TrainView (props) {
               <button className="App-button colorYellow"
                   onClick={(e) => {
                     if (toneGen !== null) {
-                      toneGen.play_note(trainData.note_stack[0])
+                      console.log("replay:", notes);
+                      toneGen.play_notes(notes)
                     }
                   }}>
                 Replay
@@ -144,11 +204,12 @@ function TrainView (props) {
                   // need to do it this way so that the AudioContext is created by the user
                   // for Chrome
                   if (toneGen === null) {
-                    toneGen = new ToneGen()
+                    toneGen = new ToneGen(props)
                   }
-                  var note = toneGen.play_rand_note()
-                  console.log(note)
-                  trainData.addNote(note);
+                  var note_arr = toneGen.play_rand_seq()
+                  setNotes(note_arr);
+                  console.log(note_arr);
+                  trainData.addNoteArr(note_arr);
                 }}>
               Next Note
             </button>
