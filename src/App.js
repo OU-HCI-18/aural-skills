@@ -92,6 +92,10 @@ class App extends React.Component {
       this.setState({max_leap : value});
     } else if (setting === "mode") {
       this.setState({mode : value});
+    } else if (setting === "range") {
+      this.setState({range : value});
+    } else if (setting === "ui") {
+      this.setState({ui : value});
     }
   }
 
@@ -112,6 +116,11 @@ class App extends React.Component {
           <Route path='/settings'>
             <Settings 
               setSettings={this.setSettings}
+              numNotes={this.state.num_notes}
+              maxLeap={this.state.max_leap}
+              mode={this.state.mode}
+              range={this.state.range}
+              ui={this.state.ui}
             />
           </Route>
           <Route path='/results'>

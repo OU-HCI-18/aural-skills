@@ -46,11 +46,12 @@
 }
 
 .Settings-table {
-  text-align: center;
+  text-align: left;
 }
 
 .Settings-table-cell {
-  padding: 30px;
+  padding: 10px 20px 10px 20px;
+  text-align: left;
 }
 
 label {
