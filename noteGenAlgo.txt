@@ -1,0 +1,161 @@
+// The following is pseudo-ish-code that, given certain settings, will generate a
+// series of tones. This is written for one octave but Scottie can easily adapt it for
+// two.
+
+// Throughout this algorithm, pitches will be represented using ints. To translate the
+// int into a pitch, count half-steps from C4.
+
+// Settings: these should be imported from elsewhere
+int numNotes; // # of notes to be played, valid values: 1+
+int maxLeap; // maximum interval between notes, valid values: 2 through 8
+String mode; // name of a mode to be played; for now, just {"major","minor"} (enum?)
+
+// Assemble usable values based on settings
+int[] scale; // this will hold a set of ints representing chromatic distance from C4
+switch (mode)
+{
+	case ("major"):
+		scale = new int[0,2,4,5,7,9,11,12,14,16,17,19,21,23,24];
+		break;
+	case ("minor"):
+		scale = new int[1,2,3,5,7,8,10,11,12,14,15,17,19,20,22,23,24];
+		break;
+}
+// Next, we're going to translate the maximum interval into chromatic distance
+switch (maxLeap)
+{
+	case (2):
+		maxLeap = 2;
+		break;
+	case (3):
+		maxLeap = 4;
+		break;
+	case (4):
+		maxLeap = 5;
+		break;
+	case (5):
+		maxLeap = 7;
+		break;
+	case (6):
+		maxLeap = 9;
+		break;
+	case (7):
+		maxLeap = 11;
+		break;
+	case (8):
+		maxLeap = 12;
+		break;
+}
+// note: based on accepted values, neither switch statement requires "default" branch
+
+// Generate tones using our parameters
+int curr; // store current note
+int last; // store last note played
+
+// Generate and play first tone
+curr = rand(scale); // draw a random value from set (int[] scale)
+play(curr); // generate tone
+addToStack(curr); // add this tone to a stack for replaying/scoring
+last = curr; // update last
+
+// Generate subsequent tones
+for (int noteCounter = 1; noteCounter < numNotes; ++noteCounter)
+{
+	curr = rand(scale);
+	while (abs(curr - last) > maxLeap) // this loop checks to see whether the
+						// selected note is valid based on
+						// maximum interval distance.
+						// Loop until valid note is found.
+	{	
+		curr = rand(scale);
+	} // upon exiting the loop, we know curr represents a valid note
+	play(curr);
+	addToStack(curr);
+	last = curr;
+	// note: the above three statements always appear together and could be
+	// lumped into a function, if you so desire
+}
+
+
+/********************************************************************
+	Here's how Jack actually implemented it (slightly simplified)
+		see the toneGen branch for full implemnetation
+********************************************************************/
+
+// first, define our rand functions
+
+// random number between 0 (inclusive) and num (exclusive)
+
+function rand(num) {
+  return Math.floor(Math.random() * num);
+}
+
+// get a random element from the specified array
+
+function rand_array(array) {
+  return array[rand(array.length)]
+}
+
+// scans through the array the get the notes that are allowed 
+// eg in the interval [prev_note - max_leap, prev_note + max_leap]
+
+function allowed_notes(array, prev_note, max_leap) {
+  var i = 0;
+  var x1;
+  var x2;
+  // this is guaranteed to not go off the end of the array
+  while (array[i] < (prev_note - max_leap)) {
+    i += 1;
+  }
+  x1 = i;
+  // bounds checking
+  while ((i < array.length) && (array[i] < prev_note + max_leap)) {
+    i += 1;
+  }
+  x2 = i;
+  // return elements array[x1] to array[x2]
+  return array[x1 : x2]
+}
+
+// this code is basically in the constructor for the "class" we're constructing here
+// eg it's executed once
+
+function init_tone_gen(mode, num_notes, max_leap, range) {
+    switch (mode) {
+    	case ("major"):
+		scale = new int[0,2,4,5,7,9,11,12,14,16,17,19,21,23,24];
+		break;
+	case ("minor"):
+		scale = new int[0,2,3,5,7,8,10,11,12,14,15,17,19,20,22,23,24];
+		break;
+	case("blues"):
+		scale = new int[0,3,5,6,7,10,12,15,17,18,19,22,24];
+		break;
+	case("pentatonic"):
+		scale = new int[0,2,4,7,9,12,14,16,19,21,24];
+		break;
+	case("chromatic"):
+		scale = new int[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,
+			20,21,22,23,24];
+	break;
+    }
+	prev_note = -1;
+	if (range == 1) {
+		i = scale.find_index_of_first_element_greater_than_equal_to(12)
+		scale = scale[0 : i]
+	}
+}
+
+function random_note() {
+    // sentinel: no previous note exists
+    if (prev_note === -1) 
+	{
+      prev_note = rand(note_arr)
+      play(prev_note)
+    } 
+	else 
+	{
+      prev_note = rand_array(allowed_notes(note_arr, prev_note, max_leap))
+      play(prev_note)
+    }
+  }

@@ -1,0 +1,26 @@
+SETTINGS WIDGETS
+
+Setting		| Datatype	| Values	| Widget
+----------------------------------------------------------------
+Number of notes | int		| 1 to max (10)	| Spinner
+Max leap	| Enum		| (see below)	| ComboBox
+Mode		| Enum		| Major or Minor| ComboBox
+
+Enumerated values for Max leap are below.
+Each value maps to an integer distance in half steps.
+
+Minor Second	(1)
+Major Second	(2)
+Minor Third	(3)
+Major Third	(4)
+Perfect Fourth	(5)
+Tritone		(6)
+Perfect Fifth	(7)
+Minor Sixth	(8)
+Major Sixth	(9)
+Minor Seventh	(10)
+Major Seventh	(11)
+Perfect Octave	(12)
+
+The above values should work for Scottie's algorithm.
+
