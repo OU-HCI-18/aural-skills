@@ -8,22 +8,33 @@ const note_map = {
     'C6':14
 };
 
-const major = ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'];
-const major_sfn = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
-const minor = ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','Bb5','B5','C6'];
-const minor_sfn = [0,  0,    0,   0,   0, 0,'\u266D','\u266E',0,  0,    0,   0,   0,0,'\u266D','\u266E',0];
-
-const blues = ['C4','Eb4','F4','F#4','G4','Bb4','C5','Eb5','F5','F#5','G5','Bb5','C6'];
-const blues_sfn = [0,0,'\u266E','\u266F',0,   0,   0,0,'\u266E','\u266F',0,    0,   0];
-
-const pentatonic = ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'];
-const pentatonic_sfn = [0,0,0,0,0,0,0,0,0,0]
-
-const chromatic = ['C4','C#4','D4','Eb4','E4','F4','F#4','G4','Ab4','A4','Bb4','B4',
-'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5','C6']
-const chromatic_sfn = ['\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',
-'\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',0]
+const major = {
+    scale : ['C4','D4','E4','F4','G4','A4','B4','C5','D5','E5','F5','G5','A5','B5','C6'],
+    sfn :   [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+    staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+}
+const minor = {
+    scale : ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','Bb5','B5','C6'],
+    sfn : [0,   0,    0,   0,   0,0,'\u266D','\u266E',0,   0,   0,   0,   0,0,'\u266D','\u266E',0],
+    staff : [   0,   0,    0,   0,   0,  'b',   'b',   0,  0,   0,  'b',   0,   0,    0,    0,   0,   0]
+}
+const blues = {
+    scale : ['C4','Eb4','F4','F#4','G4','Bb4','C5','Eb5','F5','F#5','G5','Bb5','C6'],
+    sfn : [0,0,'\u266E','\u266F',0,0,0,0,'\u266E','\u266F',0,0,0],
+    staff : [0,     'b',   0,    0,   0,  'b',   0,    0,   0,    0,   0,    0,   0]
+}
+const pentatonic = {
+    scale : ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'],
+    sfn :   [0,0,0,0,0,0,0,0,0,0],
+    staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+}
+const chromatic = {
+    scale : ['C4','C#4','D4','Eb4','E4','F4','F#4','G4','Ab4','A4','Bb4','B4',
+'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5','C6'],
+    sfn : ['\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',
+'\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',0],
+    staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+}
 
 function Note(props) {
     return (
@@ -127,41 +138,45 @@ function Lines(props) {
         y = false;
         var prev = false;
         start = props.height - props.gap/2
-        for (var j in props.scale) {
-            i = note_map[props.scale[j]]; // index from the note map
-            if (i > 8) {break}; // only draw values in one octave
-            y = (i % 2 === 1)
-            x = (prev) ? 20 : 0;
-            if (props.scale[j][1] === '#') {
-                // draw a #
-                y = (y) ? 10 : 9
-                ctx.fillText('\u266F', 80 + x, start + y - i*(props.gap/2));
-                prev = !prev;
-                continue;
+        for (var j in props.staff) {
+            console.log(j)
+            if (props.staff[j]) {
+                i = note_map[props.scale[j]]; // index from the note map
+                y = (i % 2 === 1)
+                x = (prev) ? 20 : 0;
+                if (props.scale[j][1] === '#') {
+                    // draw a #
+                    y = (y) ? 10 : 9
+                    ctx.fillText('\u266F', 80 + x, start + y - i*(props.gap/2));
+                    prev = !prev;
+                    continue;
+                }
+                else if (props.scale[j][1] === 'b') {
+                    // draw a b
+                    y = (y) ? 10 : 7
+                    ctx.fillText('\u266D', 80 + x, start + y - i*(props.gap/2));
+                    prev = !prev;
+                    continue;
+                }
             }
-            else if (props.scale[j][1] === 'b') {
-                // draw a b
-                y = (y) ? 10 : 7
-                ctx.fillText('\u266D', 80 + x, start + y - i*(props.gap/2));
-                prev = !prev;
-                continue;
+            else {
+                prev = false;
             }
-            // natural = U+266E
         }
 
-    }, [props.scale, props.fill, props.gap, props.height, props.width, props.notes, props.sfn]); // only do this once
+    }, [props.scale, props.fill, props.gap, props.height, props.width, props.notes, props.sfn, props.staff]); // only do this once
 
     return (
-        <div>
+    <div>
         <canvas className="lines" ref={canvas} width={props.width} height={props.height} />
         <img src={treble} alt={"A treble clef"} style={{position:'absolute',top:50,left:20,width:70,height:210,z_index:4}}/>
-        </div>
+    </div>
     )
 }
 
 function Staff(props) {
     // immutable
-    const [scale] = useState(() => {
+    const [mode] = useState(() => {
         switch(props.mode) {
             default :
             case "major" :
@@ -176,42 +191,33 @@ function Staff(props) {
                 return chromatic;
         }
     });
-    const [sfn] = useState(() => {
-        switch(props.mode) {
-            default :
-            case "major" :
-                return major_sfn;
-            case "minor" : 
-                return minor_sfn;
-            case "blues" : 
-                return blues_sfn;
-            case "pentatonic" : 
-                return pentatonic_sfn;
-            case "chromatic" :
-                return chromatic_sfn;
-        }
-    })
-    const [notes] = useState((props.range === 1) 
-            ? scale.slice(0, Math.ceil(scale.length / 2))
-            : scale
-    );
     const [note, setNote] = useState('.');
 
     return (
     <div>
         <div className="staff" height={200}>
-            <Lines height={235} gap={30} fill={1} scale={scale} notes={notes} sfn={sfn}
+            <Lines height={235} gap={30} fill={1} 
+                scale={mode.scale} sfn={mode.sfn} staff={mode.staff}
+                notes={(props.range === 1) 
+                    ? mode.scale.slice(0, Math.ceil(mode.length / 2))
+                    : mode.scale
+                }
                 width={
-                (props.range === 2) ? (
-                    (props.mode === "chromatic") ? 1100
-                    : (props.mode === "minor") ? 730 
-                        : (props.mode === "major") ? 700 : 600)
-                : ((props.mode === "chromatic") ? 70
-                    : (props.mode === "minor") ? 630 
-                        : (props.mode === "major") ? 600 : 500)
+                (props.range === 2) 
+                    ? ((props.mode === "chromatic") ? 1100
+                        : (props.mode === "minor") ? 730 
+                            : (props.mode === "major") ? 700 : 600)
+                    : ((props.mode === "chromatic") ? 70
+                        : (props.mode === "minor") ? 630 
+                            : (props.mode === "major") ? 600 : 500)
                 }
             />
-            <Notes sfn={sfn} notes={notes} onNoteClick={props.onNoteClick} setNote={setNote}/>
+            <Notes onNoteClick={props.onNoteClick} setNote={setNote} sfn={mode.sfn} 
+                notes={(props.range === 1) 
+                    ? mode.scale.slice(0, Math.ceil(mode.length / 2))
+                    : mode.scale
+                } 
+            />
             {/* canvas == lines */}
         </div>
         {note}
