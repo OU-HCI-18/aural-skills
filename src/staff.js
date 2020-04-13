@@ -11,21 +11,21 @@ const note_map = {
 class note {
     name;  // note name
     index; // computed
-    sfn;   // #, b, 0
+    sfn;   // #, b, n, 0
     staff; // #, b, 0
-    align; // positive or negative integer
+    align; // positive or negative number
 
     // defaults, just do note('C4',0,'#',0) to overwrite
     constructor(name, sfn=0, staff=0, align=0) {
         this.name=name;
         this.index=note_map[name];
         this.sfn=sfn;
+        this.staff=staff;
         this.align=align;
     }
 }
 
-const major = 
-[
+const major = [
     new note('C4'),
     new note('D4'),
     new note('E4'),
@@ -41,29 +41,97 @@ const major =
     new note('A5'),
     new note('B5'),
     new note('C6')
-]
-const minor = {
-    scale : ['C4','D4','Eb4','F4','G4','Ab4','Bb4','B4','C5','D5','Eb5','F5','G5','Ab5','Bb5','B5','C6'],
-    sfn : [0,   0,    0,   0,   0,0,'\u266D','\u266E',0,   0,   0,   0,   0,0,'\u266D','\u266E',0],
-    staff : [   0,   0,    0,   0,   0,  'b',   'b',   0,  0,   0,  'b',   0,   0,    0,    0,   0,   0]
-}
-const blues = {
-    scale : ['C4','Eb4','F4','F#4','G4','Bb4','C5','Eb5','F5','F#5','G5','Bb5','C6'],
-    sfn : [0,0,'\u266E','\u266F',0,0,0,0,'\u266E','\u266F',0,0,0],
-    staff : [0,     'b',   0,    0,   0,  'b',   0,    0,   0,    0,   0,    0,   0]
-}
-const pentatonic = {
-    scale : ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'],
-    sfn :   [0,0,0,0,0,0,0,0,0,0],
-    staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-}
-const chromatic = {
-    scale : ['C4','C#4','D4','Eb4','E4','F4','F#4','G4','Ab4','A4','Bb4','B4',
-'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5','C6'],
-    sfn : ['\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',
-'\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',0],
-    staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-}
+];
+const minor = [
+    new note('C4'),
+    new note('D4'),
+    new note('Eb4'),
+    new note('F4'),
+    new note('G4'),
+    new note('Ab4', 0, 'b', 2),
+    new note('Bb4', 'b', 'b', 0),
+    new note('B4', 'n'),
+    new note('C5'),
+    new note('D5'),
+    new note('Eb5', 0, 'b', 1),
+    new note('F5'),
+    new note('G5'),
+    new note('A5'),
+    new note('B5', 'n'),
+    new note('Bb5', 'b'),
+    new note('C6')
+];
+const blues = [
+    new note('C4'),
+    new note('D4'),
+    new note('Eb4', 0, 'b'),
+    new note('F4', 'n'),
+    new note('F#4', '#'),
+    new note('G4'),
+    new note('Bb4', 'b'),
+    new note('B4', 'n'),
+    new note('C5'),
+    new note('Eb5'),
+    new note('F5', 'n'),
+    new note('F#5', '#'),
+    new note('G5'),
+    new note('B5', 'n'),
+    new note('Bb5', 'b'),
+    new note('C6')
+];
+const pentatonic = [
+    new note('C4'),
+    new note('D4'),
+    new note('E4'),
+    new note('G4'),
+    new note('A4'),
+    new note('C5'),
+    new note('D5'),
+    new note('E5'),
+    new note('G5'),
+    new note('A5'),
+    new note('C6')
+];
+// {
+//     scale : ['C4','D4','E4','G4','A4','C5','D5','E5','G5','A5','C6'],
+//     sfn :   [0,0,0,0,0,0,0,0,0,0],
+//     staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+// }
+const chromatic = [
+    new note('C4'),
+    new note('C#4'),
+    new note('D4'),
+    new note('Eb4'),
+    new note('E4'),
+    new note('F4'),
+    new note('F#4'),
+    new note('G4'),
+    new note('Ab4'),
+    new note('A4'),
+    new note('Bb4'),
+    new note('B4'),
+    new note('C5'),
+    new note('C#5'),
+    new note('D5'),
+    new note('E5'),
+    new note('Eb5'),
+    new note('F5'),
+    new note('F#5'),
+    new note('G5'),
+    new note('Ab5'),
+    new note('A5'),
+    new note('Bb5'),
+    new note('B5'),
+    new note('C6'),
+    new note('C#6'),
+];
+// {
+//     scale : ['C4','C#4','D4','Eb4','E4','F4','F#4','G4','Ab4','A4','Bb4','B4',
+// 'C5', 'C#5', 'D5', 'Eb5', 'E5', 'F5', 'F#5', 'G5', 'Ab5', 'A5', 'Bb5', 'B5','C6'],
+//     sfn : ['\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',
+// '\u266E','\u266F',0,'\u266D','\u266E','\u266E','\u266F',0,'\u266D','\u266E','\u266D','\u266E',0],
+//     staff : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+// }
 
 function Note(props) {
     return (
@@ -149,9 +217,10 @@ function Lines(props) {
                 ctx.fillStyle = '#000';
                 if (props.notes[i].sfn === "#")
                     ctx.fillText('\u266F', x-5, y+6);
-                else {
+                else if (props.notes[i].sfn === "b") 
                     ctx.fillText('\u266D', x-5, y+6);
-                }
+                else 
+                    ctx.fillText('\u266E', x-5, y+6);
                 ctx.fillStyle = '#FFF';
             }
 
@@ -172,31 +241,24 @@ function Lines(props) {
         // time to loop through the scale and find sharps and flats
         ctx.font = "35px Georgia";
         y = false;
-        var prev = false;
         start = props.height - props.gap/2
         for (var j in props.notes) {
             console.log(j)
             if (props.notes[j].staff) {
                 i = props.notes[j].index; 
-                y = (i % 2 === 1)
-                x = (prev) ? 20 : 0;
+                y = (i % 2 === 1);
+                x = props.notes[j].align*15;
                 if (props.notes[j].staff === '#') {
                     // draw a #
                     y = (y) ? 10 : 9
                     ctx.fillText('\u266F', 80 + x, start + y - i*(props.gap/2));
-                    prev = !prev;
                     continue;
-                }
-                else {
+                } else {
                     // draw a b
                     y = (y) ? 10 : 7
                     ctx.fillText('\u266D', 80 + x, start + y - i*(props.gap/2));
-                    prev = !prev;
                     continue;
                 }
-            }
-            else {
-                prev = false;
             }
         }
 
@@ -237,7 +299,7 @@ function Staff(props) {
                 (props.range === 2) 
                     ? ((props.mode === "chromatic") ? 1100
                         : (props.mode === "minor") ? 730 
-                            : (props.mode === "major") ? 700 : 600)
+                            : (props.mode === "major") ? 700 : 700)
                     : ((props.mode === "chromatic") ? 70
                         : (props.mode === "minor") ? 630 
                             : (props.mode === "major") ? 600 : 500)
