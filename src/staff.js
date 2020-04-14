@@ -49,7 +49,7 @@ const minor = [
     new note('F4'),
     new note('G4'),
     new note('Ab4', 0, 'b', 2),
-    new note('Bb4', 'b', 'b', 0),
+    new note('Bb4', 0, 'b', 0),
     new note('B4', 'n'),
     new note('C5'),
     new note('D5'),
@@ -57,28 +57,28 @@ const minor = [
     new note('F5'),
     new note('G5'),
     new note('A5'),
-    new note('Bb5', 'b'),
+    new note('Bb5'),
     new note('B5', 'n'),
     new note('C6')
 ];
 const blues = [
     new note('C4'),
-    new note('D4'),
     new note('Eb4'),// 0, 'b'),
     new note('F4', 'n'),
     new note('F#4', '#'),
     new note('G4'),
-    new note(0, 0, 'b', 2, 5),
-    new note('Bb4', 'b', 'b', 0),
-    new note('B4', 'n'),
+    new note('Bb4', 0, 'b', 0),
+    // new note('B4', 'n'),
     new note('C5'),
     new note('Eb5', 0, 'b', 1),
     new note('F5', 'n'),
     new note('F#5', '#'),
     new note('G5'),
-    new note('Bb5', 'b'),
-    new note('B5', 'n'),
-    new note('C6')
+    new note('Bb5'),
+    // new note('B5', 'n'),
+    new note('C6'),
+    // extra at the end
+    new note(0, 0, 'b', 2, 5),
 ];
 const pentatonic = [
     new note('C4'),
@@ -234,8 +234,11 @@ function Lines(props) {
 
                 ++index;
             }
-
+        }
+        // time to loop through the scale and find sharps and flats
+        for (i in props.notes) {
             if (props.notes[i].staff) {
+                j = props.notes[i].index;
                 ctx.font = "35px Georgia";
                 y = false;
                 y = (j % 2 === 1);
@@ -254,15 +257,7 @@ function Lines(props) {
             }
         }
 
-        // TODO: move this into the above loop
-        // TODO: add the 'align' bit
-        // time to loop through the scale and find sharps and flats
-        
-        // start = props.height - props.gap/2
-        // for (var j in props.notes) {
-        //     console.log(j)
-            
-        // }
+
 
     }, [props.fill, props.gap, props.width, props.height, props.notes, props.range]); // only do this once
 
