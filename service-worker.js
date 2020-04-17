@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/aural-skills/precache-manifest.51fcd7aa51633a1b76717102d20a3b51.js"
+  "/aural-skills/precache-manifest.ac5c8339e5673b1e87f49b298c206f93.js"
 );
 
 self.addEventListener('message', (event) => {
