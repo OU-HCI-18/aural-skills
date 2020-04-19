@@ -25,7 +25,7 @@ class App extends React.Component {
       
       replay : true,  // allow the user to replay notes
       
-      max_leap : 6,   // maximum interval of toneGen
+      max_leap : 7,   // maximum interval of toneGen
       mode : "major", // mode of toneGen
       num_notes: 5,   // number of notes to play at a time
       range: 2,       // range of toneGen
@@ -260,7 +260,7 @@ function TrainView (props) {
                 if (toneGen === null) {
                   toneGen = new ToneGen(props)
                 }
-                toneGen.play_note('C4')
+                toneGen.play_notes(['C4','C5'])
               }}
             >
               Play a C
