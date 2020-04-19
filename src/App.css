@@ -20,7 +20,7 @@
 .App-button {
   height: 8vmin;
   width: 8vw;
-  min-width: 130px;
+  min-width: 125px;
   justify-content: center;
   font-size: calc(14px + 1vmin);
   border: black;
@@ -30,7 +30,7 @@
 .App-buttonXL {
   height: 8vmin;
   width: 10vw;
-  min-width: 130px;
+  min-width: 125px;
   justify-content: center;
   font-size: calc(14px + 1vmin);
   border: black;

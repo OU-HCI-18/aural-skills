@@ -277,7 +277,7 @@ function TrainView (props) {
                   // console.log(note_arr);
                   trainData.addNoteArr(note_arr);
                 }}>
-              Next Tune
+              Next Melody
             </button>
           </div>
       </div>
