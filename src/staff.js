@@ -56,7 +56,7 @@ const minor = [
     new note('Eb5', 0, 'b', 1),
     new note('F5'),
     new note('G5'),
-    new note('A5'),
+    new note('Ab5'),
     new note('Bb5'),
     new note('B5', 'n'),
     new note('C6')

@@ -8,7 +8,7 @@ function NumNotes(props) {
         className="Input-Spinner" 
         type="number"
         min="1"
-        max="10"
+        max="20"
         step="1"
         value={props.default}
         onChange={(e) => props.setSettings("num_notes", e.target.value)}  
@@ -22,17 +22,18 @@ function MaxLeap(props) {
       defaultValue={props.default}
       onChange={(e) => props.setSettings("max_leap", e.target.value)}
   >
-    <option value={1}>Minor Second</option>
-    <option value={2}>Major Second</option>
-    <option value={3}>Minor Third</option>
-    <option value={4}>Perfect Fourth</option>
-    <option value={5}>Tritone</option>
-    <option value={6}>Perfect Fifth</option>
-    <option value={7}>Minor Sixth</option>
-    <option value={8}>Major Sixth</option>
-    <option value={9}>Minor Seventh</option>
-    <option value={10}>Major Seventh</option>
-    <option value={11}>Perfect Octave</option>
+    {/*<option value={1}>Minor Second</option>*/}
+    <option value={2}>{/*Major */}Second</option>
+    {/*<option value={3}>Minor Third</option>*/}
+    <option value={4}>{/*Major */}Third</option>
+    <option value={5}>{/*Perfect */}Fourth</option>
+    {/*<option value={6}>Tritone</option>*/}
+    <option value={7}>{/*Perfect */}Fifth</option>
+    {/*<option value={8}>Minor Sixth</option>*/}
+    <option value={9}>{/*Major */}Sixth</option>
+    {/*<option value={10}>Minor Seventh</option>*/}
+    <option value={11}>{/*Major */}Seventh</option>
+    <option value={12}>Octave</option>
   </select>
   );
 }
