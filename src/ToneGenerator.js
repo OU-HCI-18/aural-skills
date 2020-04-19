@@ -74,7 +74,7 @@ class ToneGen {
     }
   )
   {
-    console.log("building toneGen with props", props);
+    // console.log("building toneGen with props", props);
 
     // store params
     this.duration = props.duration;

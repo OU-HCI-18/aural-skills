@@ -87,10 +87,10 @@ function Settings(props) {
   <header style={{padding:0}}>
     <h2>Settings</h2>
     <p>
-      <NavLink to='/'>
+      <NavLink to='/aural-skills'>
         <button className="App-buttonXL colorGreen">Home</button>
       </NavLink>
-      <NavLink to='/train'>
+      <NavLink to='/aural-skills/train'>
         <button className="App-buttonXL colorCoral">Start</button>
       </NavLink>
     </p>

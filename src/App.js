@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Link, Switch, Route } from 'react-router-dom';
 
 import './App.css';
@@ -113,7 +113,7 @@ class App extends React.Component {
       <h1>Aural Training</h1> 
       <BrowserRouter>
         <Switch>
-          <Route path='/settings'>
+          <Route path='/aural-skills/settings'>
             <Settings 
               setSettings={this.setSettings}
               numNotes={this.state.num_notes}
@@ -123,12 +123,12 @@ class App extends React.Component {
               ui={this.state.ui}
             />
           </Route>
-          <Route path='/results'>
+          <Route path='/aural-skills/results'>
             <ResultsView 
               trainData={trainData}
             />
           </Route>
-          <Route path='/train'> 
+          <Route path='/aural-skills/train'> 
             <TrainView 
               trainData = {trainData} 
               replay = {this.state.replay} 
@@ -142,7 +142,7 @@ class App extends React.Component {
               synth = {this.state.synth}
             /> 
           </Route>
-          <Route path='/'> 
+          <Route path='/aural-skills/'> 
             <PlayView 
               swapUI={this.swapUI}
               swapRange={this.swapRange}
@@ -169,18 +169,15 @@ function PlayView (props) {
   
   return (
   <div>
-    <button className="App-button colorPurple" onClick={(e) => props.swapUI()}>UI</button>
-    <button className="App-button colorBlue" onClick={(e) => props.swapRange()}>Range</button>
-
     <p>
-      <Link to='/train'>
+      <Link to='/aural-skills/train'>
         <button className="App-button colorGreen" onClick={props.onStart}>Start</button>
       </Link>
-      <Link to='/settings'>
+      <Link to='/aural-skills/settings'>
         <button className="App-button colorCoral">Settings</button>
       </Link>
-      <Link to='/results'>
-        <button className="App-button colorYellow">Results</button>
+      <Link to='/aural-skills/about'>
+        <button className="App-button colorYellow">About</button>
       </Link>
     </p>
     <div>
@@ -210,20 +207,41 @@ function TrainView (props) {
   const [notes, setNotes] = useState('');
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState(null);
-  // const toneGen = new ToneGen();
+  
+  useEffect(() => {
+    toneGen = new ToneGen(props);
+    var note_arr = toneGen.play_rand_seq()
+    setNotes(note_arr);
+    // console.log(note_arr);
+    trainData.addNoteArr(note_arr);
+  }, []);
+
   return (
     <div>
       <p>
-        <Link to='/'>
-          <button className="App-button colorGreen">Stop</button>
+        <Link to='/aural-skills'>
+          <button className="App-button colorGreen">Start Over</button>
         </Link>
-        <Link to='/settings'>
+        <Link to='/aural-skills/settings'>
           <button className="App-button colorCoral">Settings</button>
         </Link>
-        <Link to='/results'>
+        <Link to='/aural-skills/results'>
           <button className="App-button colorYellow">Results</button>
         </Link>
       </p>
+      <props.ui
+            mode = {props.mode}
+            range = {props.range}
+            onNoteClick = {(note) => {
+              var res = trainData.addGuess(note)
+              if (res !== -1) {
+                setGuess(note)
+                setResult(res);
+              }
+            }}
+          />
+        <p>You Guessed:</p>
+        <p>{guess}{result === null ? '.' : (result ? ' : Correct' : ' : Incorrect')}</p>
       <div className="App">
         <div>
           {props.replay && 
@@ -237,6 +255,16 @@ function TrainView (props) {
                 Replay
               </button>
             }
+            <button className="App-button colorPurple"
+               onClick={(e) => {
+                if (toneGen === null) {
+                  toneGen = new ToneGen(props)
+                }
+                toneGen.play_note('C4')
+              }}
+            >
+              Play a C
+            </button>
             <button className="App-button colorGreen"
                 onClick={(e) => {
                   // need to do it this way so that the AudioContext is created by the user
@@ -246,24 +274,12 @@ function TrainView (props) {
                   }
                   var note_arr = toneGen.play_rand_seq()
                   setNotes(note_arr);
-                  console.log(note_arr);
+                  // console.log(note_arr);
                   trainData.addNoteArr(note_arr);
                 }}>
               Next Note
             </button>
           </div>
-          <props.ui
-            mode = {props.mode}
-            range = {props.range}
-            onNoteClick = {(note) => {
-              if (!trainData.guessed) {
-                setGuess(note);
-              }
-              setResult(trainData.addGuess(note));
-            }}
-          />
-        <p>You Guessed:</p>
-        <p>{guess}{result === null ? '' : (result ? ' : Correct' : ' : Incorrect')}</p>
       </div>
     </div>
   );
@@ -273,13 +289,13 @@ function ResultsView (props) {
   return (
     <div> 
     <p>
-      <Link to='/'>
+      <Link to='/aural-skills'>
         <button className="App-button colorGreen">Start Over</button>
       </Link>
-      <Link to='/settings'> 
+      <Link to='/aural-skills/settings'> 
         <button className="App-button colorCoral">Settings</button>
       </Link>
-      <Link to='/train'>
+      <Link to='/aural-skills/train'>
         <button className="App-button colorYellow">
           Continue
         </button>
