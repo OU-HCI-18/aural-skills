@@ -236,7 +236,8 @@ function TrainView (props) {
               var res = trainData.addGuess(note)
               if (res !== -1) {
                 setGuess(note)
-                setResult(res);
+                setResult(res)
+                toneGen.play_note(note);
               }
             }}
           />
