@@ -25,9 +25,9 @@ class App extends React.Component {
       
       replay : true,  // allow the user to replay notes
       
-      max_leap : 3,   // maximum interval of toneGen
-      mode : "minor", // mode of toneGen
-      num_notes: 3,   // number of notes to play at a time
+      max_leap : 6,   // maximum interval of toneGen
+      mode : "major", // mode of toneGen
+      num_notes: 5,   // number of notes to play at a time
       range: 2,       // range of toneGen
       gap : 1,        // seconds gap between notest
       duration: '4n', // note duration
