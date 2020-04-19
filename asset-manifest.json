@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/aural-skills/static/css/main.1fe838a0.chunk.css",
-    "main.js": "/aural-skills/static/js/main.a885f276.chunk.js",
-    "main.js.map": "/aural-skills/static/js/main.a885f276.chunk.js.map",
+    "main.css": "/aural-skills/static/css/main.64b6fcf5.chunk.css",
+    "main.js": "/aural-skills/static/js/main.cacb581a.chunk.js",
+    "main.js.map": "/aural-skills/static/js/main.cacb581a.chunk.js.map",
     "runtime-main.js": "/aural-skills/static/js/runtime-main.af778e17.js",
     "runtime-main.js.map": "/aural-skills/static/js/runtime-main.af778e17.js.map",
     "static/js/2.f5625b8b.chunk.js": "/aural-skills/static/js/2.f5625b8b.chunk.js",
     "static/js/2.f5625b8b.chunk.js.map": "/aural-skills/static/js/2.f5625b8b.chunk.js.map",
     "index.html": "/aural-skills/index.html",
-    "precache-manifest.8e227439b4eb181fd5f3d623f297774b.js": "/aural-skills/precache-manifest.8e227439b4eb181fd5f3d623f297774b.js",
+    "precache-manifest.bc1c0621ced870302e1b89905ed9acff.js": "/aural-skills/precache-manifest.bc1c0621ced870302e1b89905ed9acff.js",
     "service-worker.js": "/aural-skills/service-worker.js",
-    "static/css/main.1fe838a0.chunk.css.map": "/aural-skills/static/css/main.1fe838a0.chunk.css.map",
+    "static/css/main.64b6fcf5.chunk.css.map": "/aural-skills/static/css/main.64b6fcf5.chunk.css.map",
     "static/js/2.f5625b8b.chunk.js.LICENSE.txt": "/aural-skills/static/js/2.f5625b8b.chunk.js.LICENSE.txt",
     "static/media/treble.png": "/aural-skills/static/media/treble.211c77af.png"
   },
   "entrypoints": [
     "static/js/runtime-main.af778e17.js",
     "static/js/2.f5625b8b.chunk.js",
-    "static/css/main.1fe838a0.chunk.css",
-    "static/js/main.a885f276.chunk.js"
+    "static/css/main.64b6fcf5.chunk.css",
+    "static/js/main.cacb581a.chunk.js"
   ]
 }
