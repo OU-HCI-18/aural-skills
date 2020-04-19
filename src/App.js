@@ -263,7 +263,7 @@ function TrainView (props) {
                 toneGen.play_notes(['C4','C5'])
               }}
             >
-              Play a C
+              Play C
             </button>
             <button className="App-button colorGreen"
                 onClick={(e) => {
