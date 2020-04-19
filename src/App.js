@@ -21,14 +21,14 @@ class App extends React.Component {
 
     this.state = {
       // all settings for the app are stored here
-      ui : "staff",   // ui to use
+      ui : "piano",   // ui to use
       
       replay : true,  // allow the user to replay notes
       
-      max_leap : 7,   // maximum interval of toneGen
+      max_leap : 5,   // maximum interval of toneGen
       mode : "major", // mode of toneGen
       num_notes: 5,   // number of notes to play at a time
-      range: 2,       // range of toneGen
+      range: 1,       // range of toneGen
       gap : 1,        // seconds gap between notest
       duration: '4n', // note duration
       // synth to use
@@ -277,7 +277,7 @@ function TrainView (props) {
                   // console.log(note_arr);
                   trainData.addNoteArr(note_arr);
                 }}>
-              Next Melody
+              Next Tune
             </button>
           </div>
       </div>
