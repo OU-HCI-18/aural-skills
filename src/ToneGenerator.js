@@ -23,7 +23,10 @@ function allowed_notes(array, prev_val, max_leap) {
     i += 1;
   }
   x2 = i;
-  return array.slice(x1,x2+1);
+  console.log("prev_val was " + prev_val + " and max_leap is " + max_leap);
+  console.log("x1: " + x1 + ", x2: " + x2);
+  console.log("Allowable values: " + array.slice(x1,x2));
+  return array.slice(x1,x2);
 }
 function rand_array(array) {
   var i = rand(array.length)
@@ -40,6 +43,7 @@ This is currently NOT a React component. It probably should be?
 class ToneGen {
   
   scale = []; // built from mode and range
+  tonic_triad = [];
   max_leap;
   num_notes;
   duration;
@@ -86,25 +90,33 @@ class ToneGen {
     switch (props.mode) {
       case ("major"):
         this.scale = [0,2,4,5,7,9,11,12,14,16,17,19,21,23,24];
+        this.tonic_triad = [0,4,7,12,16,19,24];
         break;
       case ("minor"):
         this.scale = [0,2,3,5,7,8,10,11,12,14,15,17,19,20,22,23,24];
+        this.tonic_triad = [0,3,7,12,15,19,24];
         break;
       case("blues"):
         this.scale = [0,3,5,6,7,10,12,15,17,18,19,22,24];
+        this.tonic_triad = [0,3,7,12,15,19,24];
         break;
       case("pentatonic"):
         this.scale = [0,2,4,7,9,12,14,16,19,21,24];
+        this.tonic_triad = [0,4,7,12,16,19,24];
         break;
       case("chromatic"):
       default:
         this.scale = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+        this.tonic_triad = [0,4,7,12,16,19,24]; // no tonic in chromatic, we'll use major
     }
     // range check
     if (props.range === 1) {
       // find first element off the end (= C5 = 12)
       var last = this.scale.findIndex(e => e > 12); // find first element > 12
       this.scale = this.scale.slice(0, last);
+      // do the same for tonic triad
+      last = this.tonic_triad.findIndex(e => e > 12);
+      this.tonic_triad = this.tonic_triad.slice(0, last);
     }
 
     // build synth from props.synth
@@ -123,6 +135,17 @@ class ToneGen {
       return note_arr[this.prev_note];
     } else {
       this.prev_note = rand_array(allowed_notes(this.scale, this.prev_note, this.max_leap));
+      return note_arr[this.prev_note];
+    }
+  }
+
+  random_note_tonic() {
+    // case one: starting pitch
+    if (this.prev_note === -1) {
+      this.prev_note = this.tonic_triad[rand(this.tonic_triad.length)];
+      return note_arr[this.prev_note];
+    } else { // case two: end on 1 or 5
+      this.prev_note = rand_array(allowed_notes([0,7,12,19,24], this.prev_note, this.max_leap));
       return note_arr[this.prev_note];
     }
   }
@@ -149,11 +172,25 @@ class ToneGen {
   play_rand_seq() {
     var note_arr = []
     var time = 0.25
-    for (let i = 0; i < this.num_notes; ++i) {
+    // generate first note
+    console.log("Generating first note");
+    note_arr[0] = this.random_note_tonic();
+    this.synth.triggerAttackRelease(note_arr[0], this.duration, "+"+time);
+    time += this.gap;
+    // generate intermediate notes
+    for (let i = 1; i < this.num_notes - 1; ++i) {
+      console.log("Generating note " + (i+1));
       note_arr[i] = this.random_note();
       this.synth.triggerAttackRelease(note_arr[i], this.duration, "+"+time);
       time += this.gap;
     }
+    console.log("Generating last note");
+    // generate last note
+    note_arr[this.num_notes] = this.random_note_tonic();
+    this.synth.triggerAttackRelease(note_arr[this.num_notes], this.duration, "+"+time);
+    time += this.gap;
+
+    this.prev_note = -1; // reset previous note; the next melody can start somewhere new
     return note_arr;
   }
 }
