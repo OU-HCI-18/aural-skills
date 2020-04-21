@@ -10,7 +10,7 @@ function rand(num) {
   return Math.floor(Math.random() * num);
 }
 // scan through the array the get the notes that are allowed (in the interval)
-function allowed_notes(array, prev_val, max_leap) {
+function allowed_notes(array, prev_val, max_leap, log=false) {
   var i = 0;
   var x1;
   var x2;
@@ -19,13 +19,17 @@ function allowed_notes(array, prev_val, max_leap) {
     i += 1;
   }
   x1 = i;
-  while ((i < array.length) && (array[i] < prev_val + max_leap)) {
+  while ((i < array.length) && (array[i] < (prev_val + max_leap))) {
+    if (log) console.log(i, array[i] < (prev_val + max_leap), array[i], " < ", prev_val + max_leap);
     i += 1;
   }
   x2 = i;
-  console.log("prev_val was " + prev_val + " and max_leap is " + max_leap);
-  console.log("x1: " + x1 + ", x2: " + x2);
-  console.log("Allowable values: " + array.slice(x1,x2));
+  if (log) {
+    console.log(array);
+    console.log("prev_val was " + prev_val + " and max_leap is " + max_leap);
+    console.log("x1: " + x1 + ", x2: " + x2);
+    console.log("Allowable values: " + array.slice(x1,x2));
+  }
   return array.slice(x1,x2);
 }
 function rand_array(array) {
@@ -44,6 +48,7 @@ class ToneGen {
   
   scale = []; // built from mode and range
   tonic_triad = [];
+  tonic_end = [0,7,12,19,24];
   max_leap;
   num_notes;
   duration;
@@ -82,8 +87,8 @@ class ToneGen {
 
     // store params
     this.duration = props.duration;
-    this.max_leap = props.max_leap;
-    this.num_notes = props.num_notes;
+    this.max_leap = Number(props.max_leap);
+    this.num_notes = Number(props.num_notes);
     this.gap = props.gap;
 
     // build scale from props.mode and props.range
@@ -117,6 +122,7 @@ class ToneGen {
       // do the same for tonic triad
       last = this.tonic_triad.findIndex(e => e > 12);
       this.tonic_triad = this.tonic_triad.slice(0, last);
+      this.tonic_end = this.tonic_end.slice(0,3);
     }
 
     // build synth from props.synth
@@ -145,7 +151,7 @@ class ToneGen {
       this.prev_note = this.tonic_triad[rand(this.tonic_triad.length)];
       return note_arr[this.prev_note];
     } else { // case two: end on 1 or 5
-      this.prev_note = rand_array(allowed_notes([0,7,12,19,24], this.prev_note, this.max_leap));
+      this.prev_note = rand_array(allowed_notes(this.tonic_end, this.prev_note, this.max_leap));
       return note_arr[this.prev_note];
     }
   }
@@ -170,28 +176,55 @@ class ToneGen {
   }
 
   play_rand_seq() {
-    var note_arr = []
+    var local_note_arr = []
     var time = 0.25
     // generate first note
-    console.log("Generating first note");
-    note_arr[0] = this.random_note_tonic();
-    this.synth.triggerAttackRelease(note_arr[0], this.duration, "+"+time);
-    time += this.gap;
-    // generate intermediate notes
-    for (let i = 1; i < this.num_notes - 1; ++i) {
-      console.log("Generating note " + (i+1));
-      note_arr[i] = this.random_note();
-      this.synth.triggerAttackRelease(note_arr[i], this.duration, "+"+time);
-      time += this.gap;
+    // console.log("Generating first note");
+    if (this.num_notes < 3) {
+      for (let i = 0; i < this.num_notes; ++i) {
+        // console.log("Generating note " + (i+1));
+        local_note_arr[i] = this.random_note();
+        this.synth.triggerAttackRelease(local_note_arr[i], this.duration, "+"+time);
+        time += this.gap;
+      }
+      this.prev_note = -1; // reset previous note; the next melody can start somewhere new
+      return local_note_arr;
     }
-    console.log("Generating last note");
-    // generate last note
-    note_arr[this.num_notes] = this.random_note_tonic();
-    this.synth.triggerAttackRelease(note_arr[this.num_notes], this.duration, "+"+time);
-    time += this.gap;
+    else if (this.num_notes === 3) {
+      local_note_arr[0] = this.random_note_tonic();
+      this.synth.triggerAttackRelease(local_note_arr[0], this.duration, "+"+time);
+      time += this.gap;
 
-    this.prev_note = -1; // reset previous note; the next melody can start somewhere new
-    return note_arr;
+      for (let i = 1; i < this.num_notes; ++i) {
+        // console.log("Generating note " + (i+1));
+        local_note_arr[i] = this.random_note();
+        this.synth.triggerAttackRelease(local_note_arr[i], this.duration, "+"+time);
+        time += this.gap;
+      }
+      this.prev_note = -1; // reset previous note; the next melody can start somewhere new
+      return local_note_arr;
+    }
+    else {
+      local_note_arr[0] = this.random_note_tonic();
+      this.synth.triggerAttackRelease(local_note_arr[0], this.duration, "+"+time);
+      time += this.gap;
+
+      // generate intermediate notes
+      for (let i = 1; i < this.num_notes - 1; ++i) {
+        // console.log("Generating note " + (i+1));
+        local_note_arr[i] = this.random_note();
+        this.synth.triggerAttackRelease(local_note_arr[i], this.duration, "+"+time);
+        time += this.gap;
+      }
+      // console.log("Generating last note");
+      // generate last note
+      local_note_arr[this.num_notes - 1] = this.random_note_tonic();
+      this.synth.triggerAttackRelease(local_note_arr[this.num_notes - 1], this.duration, "+"+time);
+      time += this.gap;
+
+      this.prev_note = -1; // reset previous note; the next melody can start somewhere new
+      return local_note_arr;
+    }
   }
 }
 

@@ -275,7 +275,7 @@ function TrainView (props) {
                   }
                   var note_arr = toneGen.play_rand_seq()
                   setNotes(note_arr);
-                  // console.log(note_arr);
+                  console.log(note_arr);
                   trainData.addNoteArr(note_arr);
                 }}>
               Next Melody
