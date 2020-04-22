@@ -20,7 +20,7 @@ function MaxLeap(props) {
   return (
   <select 
       defaultValue={props.default}
-      onChange={(e) => props.setSettings("max_leap", e.target.value)}
+      onChange={(e) => props.setSettings("max_leap", Number(e.target.value))}
   >
     {/*<option value={1}>Minor Second</option>*/}
     <option value={2}>{/*Major */}Second</option>

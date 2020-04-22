@@ -55,7 +55,6 @@ class App extends React.Component {
     }
 
     this.onStart = this.onStart.bind(this);
-    this.swapUI = this.swapUI.bind(this);
     this.swapRange = this.swapRange.bind(this);
     this.setSettings = this.setSettings.bind(this);
   }
@@ -66,14 +65,6 @@ class App extends React.Component {
     toneGen = new ToneGen(this.state);
   }
 
-  swapUI() {
-    if (this.state.ui === "piano") {
-      this.setState({ui : "staff"})
-    }
-    else (
-      this.setState({ui : "piano"})
-    )
-  }
   swapRange() {
     if (this.state.range === 1) {
       this.setState({range : 2});
@@ -101,7 +92,6 @@ class App extends React.Component {
 
   render() {
     var ui;
-    // TODO: slap this bad boy into a wrapper UI function
     if (this.state.ui === "piano") {
       ui = Piano;
     }
@@ -113,6 +103,9 @@ class App extends React.Component {
       <h1>Aural Training</h1> 
       <BrowserRouter>
         <Switch>
+          <Route path='/aural-skills/about'>
+            <AboutView/>
+          </Route>
           <Route path='/aural-skills/settings'>
             <Settings 
               setSettings={this.setSettings}
@@ -308,6 +301,32 @@ function ResultsView (props) {
         results = {trainData.result_stack}
         score   = {trainData.calcScore()}
     />
+  </div>
+  );
+}
+
+function AboutView (props) {
+  return(
+  <div>
+  <p>
+    <Link to='/aural-skills'>
+      <button className="App-button colorGreen">Home</button>
+    </Link>
+    <Link to='/aural-skills/settings'> 
+      <button className="App-button colorCoral">Settings</button>
+    </Link>
+    <Link to='/aural-skills/train'>
+      <button className="App-button colorYellow">Start</button>
+    </Link>
+  </p>
+  <div className="App App-header">
+    <p>This website is a group project for CS 4063, Human Computer Interaction</p>
+    <p>This application is designed to help musicians of all skill levels and 
+    experiences refine their aural skills. Customize the exercises to fit your 
+    needs in the settings tab and check your progress in the results tab. Have fun!</p>
+    <p/>
+    <p>Note that this page works best on a desktop - mobile use is experimental.</p>
+  </div>
   </div>
   );
 }
