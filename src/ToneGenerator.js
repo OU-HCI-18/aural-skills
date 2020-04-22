@@ -151,7 +151,7 @@ class ToneGen {
       this.prev_note = this.tonic_triad[rand(this.tonic_triad.length)];
       return note_arr[this.prev_note];
     } else { // case two: end on 1 or 5
-      this.prev_note = rand_array(allowed_notes(this.tonic_end, this.prev_note, this.max_leap));
+      this.prev_note = rand_array(allowed_notes(this.tonic_triad, this.prev_note, this.max_leap));
       return note_arr[this.prev_note];
     }
   }
